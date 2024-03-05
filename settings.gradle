@@ -25,9 +25,14 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "UicoreKit_Compose"
-include ':app'
-include ':uicorek_compose'
+rootProject.name = "AComposeKit"
+include ':imagek'
+//SwiftKit
 include ':SwiftKit'
 project(':SwiftKit').projectDir = new File("C:\\Users\\${System.getenv().get("USERNAME")}\\Documents\\GitHub\\SwiftKit")
 include ':SwiftKit:basick'
+include ':SwiftKit:composek'
+//AImageKit
+include ':AImageKit'
+project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
+include ':AImageKit:imagek_glide_compose'
