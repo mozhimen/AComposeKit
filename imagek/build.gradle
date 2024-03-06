@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.mozhimen.composek.imagek'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 19
@@ -31,7 +31,7 @@ android {
 
 dependencies {
     implementation project(':SwiftKit:composek')
-    api project(':AImageKit:imagek_glide_compose')
+    implementation project(':AImageKit:imagek_glide_compose')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
