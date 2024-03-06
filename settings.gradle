@@ -36,3 +36,4 @@ include ':SwiftKit:composek'
 include ':AImageKit'
 project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
 include ':AImageKit:imagek_glide_compose'
+include ':AImageKit:imagek_glide'

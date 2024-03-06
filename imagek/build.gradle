@@ -31,7 +31,7 @@ android {
 
 dependencies {
     implementation project(':SwiftKit:composek')
-    implementation project(':AImageKit:imagek_glide_compose')
+    api project(':AImageKit:imagek_glide_compose')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
