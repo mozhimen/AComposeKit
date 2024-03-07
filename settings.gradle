@@ -28,13 +28,13 @@ dependencyResolutionManagement {
 rootProject.name = "AComposeKit"
 include ':imagek'
 //SwiftKit
-include ':basick'
-project(':basick').projectDir = new File("C:\\Users\\${System.getenv().get("USERNAME")}\\Documents\\GitHub\\SwiftKit\\basick")
-include ':composek'
-project(':composek').projectDir = new File("C:\\Users\\${System.getenv().get("USERNAME")}\\Documents\\GitHub\\SwiftKit\\composek")
+include ':SwiftKit'
+project(':SwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\SwiftKit")
+include ':SwiftKit:basick'
+include ':SwiftKit:composek'
 //AImageKit
-include ':imagek_glide_compose'
-project(':imagek_glide_compose').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit\\imagek_glide_compose")
-include ':imagek_glide'
-project(':imagek_glide').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit\\imagek_glide")
+include ':AImageKit'
+project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
+include ':AImageKit:imagek_glide_compose'
+include ':AImageKit:imagek_glide'
 
