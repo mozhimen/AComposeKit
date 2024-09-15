@@ -37,4 +37,11 @@ include ':AImageKit'
 project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
 include ':AImageKit:imagek_glide_compose'
 include ':AImageKit:imagek_glide'
-
+//KUtilKit
+include ':KUtilKit'
+project(':KUtilKit').projectDir = new File("D:\\Workspace\\GitHub\\KUtilKit")
+include ':KUtilKit:utilk_android'
+include ':KUtilKit:utilk_kotlin'
+include ':basic'
+include ':menuk'
+include ':switchk'
