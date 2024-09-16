@@ -1,12 +1,12 @@
-package com.mozhimen.composek.switchk
+package com.mozhimen.composek.basic.material3.tokens
 
 import androidx.compose.ui.unit.dp
 
 /**
  * @ClassName SwitchTokens
  * @Description TODO
- * @Author mozhimen
- * @Date 2024/9/14
+ * @Author Mozhimen / Kolin Zhao
+ * @Date 2024/9/16 15:50
  * @Version 1.0
  */
 object SwitchTokens {
@@ -67,69 +67,4 @@ object SwitchTokens {
     val UnselectedTrackOutlineColor = ColorSchemeKeyTokens.Outline
     val IconHandleHeight = 24.0.dp
     val IconHandleWidth = 24.0.dp
-}
-
-enum class ColorSchemeKeyTokens {
-    Background,
-    Error,
-    ErrorContainer,
-    InverseOnSurface,
-    InversePrimary,
-    InverseSurface,
-    OnBackground,
-    OnError,
-    OnErrorContainer,
-    OnPrimary,
-    OnPrimaryContainer,
-    OnPrimaryFixed,
-    OnPrimaryFixedVariant,
-    OnSecondary,
-    OnSecondaryContainer,
-    OnSecondaryFixed,
-    OnSecondaryFixedVariant,
-    OnSurface,
-    OnSurfaceVariant,
-    OnTertiary,
-    OnTertiaryContainer,
-    OnTertiaryFixed,
-    OnTertiaryFixedVariant,
-    Outline,
-    OutlineVariant,
-    Primary,
-    PrimaryContainer,
-    PrimaryFixed,
-    PrimaryFixedDim,
-    Scrim,
-    Secondary,
-    SecondaryContainer,
-    SecondaryFixed,
-    SecondaryFixedDim,
-    Surface,
-    SurfaceBright,
-    SurfaceContainer,
-    SurfaceContainerHigh,
-    SurfaceContainerHighest,
-    SurfaceContainerLow,
-    SurfaceContainerLowest,
-    SurfaceDim,
-    SurfaceTint,
-    SurfaceVariant,
-    Tertiary,
-    TertiaryContainer,
-    TertiaryFixed,
-    TertiaryFixedDim,
-}
-
-enum class ShapeKeyTokens {
-    CornerExtraLarge,
-    CornerExtraLargeTop,
-    CornerExtraSmall,
-    CornerExtraSmallTop,
-    CornerFull,
-    CornerLarge,
-    CornerLargeEnd,
-    CornerLargeTop,
-    CornerMedium,
-    CornerNone,
-    CornerSmall,
 }
