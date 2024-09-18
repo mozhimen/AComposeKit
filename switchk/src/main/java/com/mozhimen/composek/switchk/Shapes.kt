@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.material3
+package com.mozhimen.composek.switchk
 
 /**
  * @ClassName Shapes
@@ -8,4 +8,4 @@ package com.mozhimen.composek.basic.material3
  * @Version 1.0
  */
 /** CompositionLocal used to specify the default shapes for the surfaces. */
-//internal val LocalShapes = staticCompositionLocalOf { Shapes() }
+//val LocalShapes = staticCompositionLocalOf { Shapes() }

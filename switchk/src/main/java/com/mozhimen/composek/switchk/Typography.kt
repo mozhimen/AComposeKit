@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.material3
+package com.mozhimen.composek.switchk
 
 /**
  * @ClassName Typography
@@ -7,4 +7,4 @@ package com.mozhimen.composek.basic.material3
  * @Date 2024/9/16 16:00
  * @Version 1.0
  */
-//internal val LocalTypography = staticCompositionLocalOf { Typography() }
+//val LocalTypography = staticCompositionLocalOf { Typography() }

@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.material3
+package com.mozhimen.composek.switchk
 
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CardColors
@@ -25,7 +25,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
-import com.mozhimen.composek.basic.material3.tokens.ColorSchemeKeyTokens
+import com.mozhimen.composek.switchk.tokens.ColorSchemeKeyTokens
 
 /**
  * @ClassName ColorScheme
@@ -408,66 +408,66 @@ class ColorScheme(
                 ")"
     }
 
-    internal var defaultButtonColorsCached: ButtonColors? = null
-    internal var defaultElevatedButtonColorsCached: ButtonColors? = null
-    internal var defaultFilledTonalButtonColorsCached: ButtonColors? = null
-    internal var defaultOutlinedButtonColorsCached: ButtonColors? = null
-    internal var defaultTextButtonColorsCached: ButtonColors? = null
+    var defaultButtonColorsCached: ButtonColors? = null
+    var defaultElevatedButtonColorsCached: ButtonColors? = null
+    var defaultFilledTonalButtonColorsCached: ButtonColors? = null
+    var defaultOutlinedButtonColorsCached: ButtonColors? = null
+    var defaultTextButtonColorsCached: ButtonColors? = null
 
-    internal var defaultCardColorsCached: CardColors? = null
-    internal var defaultElevatedCardColorsCached: CardColors? = null
-    internal var defaultOutlinedCardColorsCached: CardColors? = null
+    var defaultCardColorsCached: CardColors? = null
+    var defaultElevatedCardColorsCached: CardColors? = null
+    var defaultOutlinedCardColorsCached: CardColors? = null
 
-    internal var defaultAssistChipColorsCached: ChipColors? = null
-    internal var defaultElevatedAssistChipColorsCached: ChipColors? = null
-    internal var defaultSuggestionChipColorsCached: ChipColors? = null
-    internal var defaultElevatedSuggestionChipColorsCached: ChipColors? = null
-    internal var defaultFilterChipColorsCached: SelectableChipColors? = null
-    internal var defaultElevatedFilterChipColorsCached: SelectableChipColors? = null
-    internal var defaultInputChipColorsCached: SelectableChipColors? = null
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultTopAppBarColorsCached: TopAppBarColors? = null
+    var defaultAssistChipColorsCached: ChipColors? = null
+    var defaultElevatedAssistChipColorsCached: ChipColors? = null
+    var defaultSuggestionChipColorsCached: ChipColors? = null
+    var defaultElevatedSuggestionChipColorsCached: ChipColors? = null
+    var defaultFilterChipColorsCached: SelectableChipColors? = null
+    var defaultElevatedFilterChipColorsCached: SelectableChipColors? = null
+    var defaultInputChipColorsCached: SelectableChipColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultCenterAlignedTopAppBarColorsCached: TopAppBarColors? = null
+    var defaultTopAppBarColorsCached: TopAppBarColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultMediumTopAppBarColorsCached: TopAppBarColors? = null
+    var defaultCenterAlignedTopAppBarColorsCached: TopAppBarColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultLargeTopAppBarColorsCached: TopAppBarColors? = null
-
-    internal var defaultCheckboxColorsCached: CheckboxColors? = null
+    var defaultMediumTopAppBarColorsCached: TopAppBarColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultDatePickerColorsCached: DatePickerColors? = null
+    var defaultLargeTopAppBarColorsCached: TopAppBarColors? = null
 
-    internal var defaultIconButtonColorsCached: IconButtonColors? = null
-
-    internal var defaultMenuItemColorsCached: MenuItemColors? = null
-
-    internal var defaultNavigationBarItemColorsCached: NavigationBarItemColors? = null
-
-    internal var defaultNavigationRailItemColorsCached: NavigationRailItemColors? = null
-
-    internal var defaultRadioButtonColorsCached: RadioButtonColors? = null
+    var defaultCheckboxColorsCached: CheckboxColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultSegmentedButtonColorsCached: SegmentedButtonColors? = null
+    var defaultDatePickerColorsCached: DatePickerColors? = null
 
-    internal var defaultSliderColorsCached: SliderColors? = null
+    var defaultIconButtonColorsCached: IconButtonColors? = null
+
+    var defaultMenuItemColorsCached: MenuItemColors? = null
+
+    var defaultNavigationBarItemColorsCached: NavigationBarItemColors? = null
+
+    var defaultNavigationRailItemColorsCached: NavigationRailItemColors? = null
+
+    var defaultRadioButtonColorsCached: RadioButtonColors? = null
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    var defaultSegmentedButtonColorsCached: SegmentedButtonColors? = null
+
+    var defaultSliderColorsCached: SliderColors? = null
 
     var defaultSwitchColorsCached: SwitchColors? = null
 
-    internal var defaultOutlinedTextFieldColorsCached: TextFieldColors? = null
-    internal var defaultTextFieldColorsCached: TextFieldColors? = null
+    var defaultOutlinedTextFieldColorsCached: TextFieldColors? = null
+    var defaultTextFieldColorsCached: TextFieldColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultTimePickerColorsCached: TimePickerColors? = null
+    var defaultTimePickerColorsCached: TimePickerColors? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
-    internal var defaultRichTooltipColorsCached: RichTooltipColors? = null
+    var defaultRichTooltipColorsCached: RichTooltipColors? = null
 }
 
 /**
@@ -477,7 +477,7 @@ class ColorScheme(
  * To retrieve the current value of this CompositionLocal, use
  * [MaterialTheme.colorSchemeLocal].
  */
-//internal val LocalColorScheme = staticCompositionLocalOf { lightColorScheme() }
+//val LocalColorScheme = staticCompositionLocalOf { lightColorScheme() }
 
 /**
  * Helper function for component color tokens. Here is an example on how to use component color
@@ -532,7 +532,7 @@ val ColorSchemeKeyTokens.value: Color
     @Composable
     get() = MaterialTheme.colorScheme.fromToken(this)
 
-internal fun androidx.compose.material3.ColorScheme.toThisColorScheme(): ColorScheme {
+fun androidx.compose.material3.ColorScheme.toThisColorScheme(): ColorScheme {
     return ColorScheme(
         primary,
         onPrimary,

@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.material3
+package com.mozhimen.composek.switchk
 
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
