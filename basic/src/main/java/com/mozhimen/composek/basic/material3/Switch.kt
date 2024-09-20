@@ -1,4 +1,4 @@
-package com.mozhimen.composek.switchk
+package com.mozhimen.composek.basic.material3
 
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Immutable

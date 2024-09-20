@@ -1,4 +1,4 @@
-package com.mozhimen.composek.switchk
+package com.mozhimen.composek.basic.material3
 
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CardColors
@@ -25,7 +25,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
-import com.mozhimen.composek.switchk.tokens.ColorSchemeKeyTokens
+import com.mozhimen.composek.basic.material3.tokens.ColorSchemeKeyTokens
 
 /**
  * @ClassName ColorScheme

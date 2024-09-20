@@ -38,7 +38,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.mozhimen.composek.switchk.tokens.SwitchTokens
+import com.mozhimen.composek.basic.material3.ColorScheme
+import com.mozhimen.composek.basic.material3.MaterialTheme
+import com.mozhimen.composek.basic.material3.SwitchColors
+import com.mozhimen.composek.basic.material3.fromToken
+import com.mozhimen.composek.basic.material3.value
+import com.mozhimen.composek.basic.material3.tokens.SwitchTokens
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
