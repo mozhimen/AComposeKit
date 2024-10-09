@@ -43,5 +43,6 @@ project(':KUtilKit').projectDir = new File("D:\\Workspace\\GitHub\\KUtilKit")
 include ':KUtilKit:utilk_android'
 include ':KUtilKit:utilk_kotlin'
 include ':basic'
-include ':menuk'
+include ':windowk'
 include ':switchk'
+include ':windowk_test'
