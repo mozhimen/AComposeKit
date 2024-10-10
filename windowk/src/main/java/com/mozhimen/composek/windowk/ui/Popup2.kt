@@ -34,6 +34,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateObserver
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.draw.alpha
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastMap
+import androidx.compose.ui.window.AlignmentOffsetPositionProvider
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.window.SecureFlagPolicy
@@ -82,6 +84,49 @@ import kotlin.math.roundToInt
 /**
  * Opens a popup with the given content.
  *
+ * A popup is a floating container that appears on top of the current activity.
+ * It is especially useful for non-modal UI surfaces that remain hidden until they
+ * are needed, for example floating menus like Cut/Copy/Paste.
+ *
+ * The popup is positioned relative to its parent, using the [alignment] and [offset].
+ * The popup is visible as long as it is part of the composition hierarchy.
+ *
+ * @sample androidx.compose.ui.samples.PopupSample
+ *
+ * @param alignment The alignment relative to the parent.
+ * @param offset An offset from the original aligned position of the popup. Offset respects the
+ * Ltr/Rtl context, thus in Ltr it will be added to the original aligned position and in Rtl it
+ * will be subtracted from it.
+ * @param onDismissRequest Executes when the user clicks outside of the popup.
+ * @param properties [PopupProperties] for further customization of this popup's behavior.
+ * @param content The content to be displayed inside the popup.
+ */
+@Composable
+fun Popup2(
+    alignment: Alignment = Alignment.TopStart,
+    offset: IntOffset = IntOffset(0, 0),
+    onDismissRequest: (() -> Unit)? = null,
+    properties: PopupProperties = PopupProperties(),
+    content: @Composable () -> Unit,
+) {
+    val popupPositioner = remember(alignment, offset) {
+        AlignmentOffsetPositionProvider(
+            alignment,
+            offset
+        )
+    }
+
+    Popup2(
+        popupPositionProvider = popupPositioner,
+        onDismissRequest = onDismissRequest,
+        properties = properties,
+        content = content
+    )
+}
+
+/**
+ * Opens a popup with the given content.
+ *
  * The popup is positioned using a custom [popupPositionProvider].
  *
  * @sample androidx.compose.ui.samples.PopupSample
@@ -96,7 +141,7 @@ fun Popup2(
     popupPositionProvider: PopupPositionProvider,
     onDismissRequest: (() -> Unit)? = null,
     properties: PopupProperties = PopupProperties(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val view = LocalView.current
     val density = LocalDensity.current
@@ -215,6 +260,7 @@ private inline fun SimpleStack(modifier: Modifier, noinline content: @Composable
                     p.placeRelative(0, 0)
                 }
             }
+
             else -> {
                 val placeables = measurables.fastMap { it.measure(constraints) }
                 var width = 0
@@ -253,7 +299,7 @@ internal class PopupLayout(
         PopupLayoutHelperImpl29()
     } else {
         PopupLayoutHelperImpl()
-    }
+    },
 ) : AbstractComposeView2(composeView.context),
     ViewRootForInspector {
     private val windowManager =
@@ -452,7 +498,7 @@ internal class PopupLayout(
         onDismissRequest: (() -> Unit)?,
         properties: PopupProperties,
         testTag: String,
-        layoutDirection: LayoutDirection
+        layoutDirection: LayoutDirection,
     ) {
         this.onDismissRequest = onDismissRequest
         if (properties.usePlatformDefaultWidth && !this.properties.usePlatformDefaultWidth) {
@@ -670,7 +716,7 @@ internal interface PopupLayoutHelper {
     fun updateViewLayout(
         windowManager: WindowManager,
         popupView: View,
-        params: ViewGroup.LayoutParams
+        params: ViewGroup.LayoutParams,
     )
 }
 
@@ -686,7 +732,7 @@ private open class PopupLayoutHelperImpl : PopupLayoutHelper {
     override fun updateViewLayout(
         windowManager: WindowManager,
         popupView: View,
-        params: ViewGroup.LayoutParams
+        params: ViewGroup.LayoutParams,
     ) {
         windowManager.updateViewLayout(popupView, params)
     }
