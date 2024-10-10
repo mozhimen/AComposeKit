@@ -43,7 +43,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.platform.AbstractComposeView2
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
@@ -66,6 +65,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.mozhimen.composek.basic.ui.platform.AbstractComposeView2
 import com.mozhimen.composek.basic.ui.platform.withInfiniteAnimationFrameNanos
 import kotlinx.coroutines.isActive
 import org.jetbrains.annotations.TestOnly
