@@ -59,6 +59,8 @@ import kotlin.math.roundToInt
 fun Switch2(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
+    switchWidth:Dp = SwitchWidth,
+    switchHeight:Dp = SwitchHeight,
     modifier: Modifier = Modifier,
     thumbContent: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
@@ -71,9 +73,9 @@ fun Switch2(
         ThumbDiameter
     }
 
-    val thumbPaddingStart = (SwitchHeight - uncheckedThumbDiameter) / 2
+    val thumbPaddingStart = (switchHeight - uncheckedThumbDiameter) / 2
     val minBound = with(LocalDensity.current) { thumbPaddingStart.toPx() }
-    val maxBound = with(LocalDensity.current) { ThumbPathLength.toPx() }
+    val maxBound = with(LocalDensity.current) { getThumbPathLength(switchWidth,switchHeight).toPx() }
     val valueToOffset = remember<(Boolean) -> Float>(minBound, maxBound) {
         { value -> if (value) maxBound else minBound }
     }
@@ -122,18 +124,20 @@ fun Switch2(
             )
             .then(toggleableModifier)
             .wrapContentSize(Alignment.Center)
-            .requiredSize(SwitchWidth, SwitchHeight)
+            .requiredSize(switchWidth, switchHeight)
     ) {
         Switch2Impl(
             checked = checked,
             enabled = enabled,
+            switchWidth = switchWidth,
+            switchHeight = switchHeight,
             colors = colors,
             thumbValue = offset.asState(),
             interactionSource = interactionSource,
             thumbShape = CircleShape,
             uncheckedThumbDiameter = uncheckedThumbDiameter,
             minBound = thumbPaddingStart,
-            maxBound = ThumbPathLength,
+            maxBound = getThumbPathLength(switchWidth,switchHeight)/*ThumbPathLength*/,
             thumbContent = thumbContent,
         )
     }
@@ -144,6 +148,8 @@ fun Switch2(
 private fun BoxScope.Switch2Impl(
     checked: Boolean,
     enabled: Boolean,
+    switchWidth:Dp = SwitchWidth,
+    switchHeight:Dp = SwitchHeight,
     colors: SwitchColors,
     thumbValue: State<Float>,
     thumbContent: (@Composable () -> Unit)?,
@@ -167,7 +173,7 @@ private fun BoxScope.Switch2Impl(
     val thumbOffset = if (isPressed) {
         with(LocalDensity.current) {
             if (checked) {
-                ThumbPathLength - 2.0.dp//SwitchTokens.TrackOutlineWidth
+                getThumbPathLength(switchWidth,switchHeight) - 2.0.dp//SwitchTokens.TrackOutlineWidth
             } else {
                 2.0.dp//SwitchTokens.TrackOutlineWidth
             }.toPx()
@@ -179,8 +185,8 @@ private fun BoxScope.Switch2Impl(
     val trackShape = CircleShape//SwitchTokens.TrackShape.value
     val modifier = Modifier
         .align(Alignment.Center)
-        .width(SwitchWidth)
-        .height(SwitchHeight)
+        .width(switchWidth)
+        .height(switchHeight)
         .border(
             2.0.dp,//SwitchTokens.TrackOutlineWidth,
             colors.borderColor(enabled, checked),
@@ -219,11 +225,14 @@ private fun BoxScope.Switch2Impl(
 
 internal val ThumbDiameter = 24.0.dp
 internal val UncheckedThumbDiameter = 16.0.dp
-private val SwitchWidth = 60.0.dp
-private val SwitchHeight = 28.0.dp
+public val SwitchWidth = 60.0.dp
+public val SwitchHeight = 28.0.dp
 private val ThumbPadding = (SwitchHeight - ThumbDiameter) / 2
+fun getThumbPadding(switchHeight: Dp):Dp =
+    (switchHeight - ThumbDiameter) / 2
 private val ThumbPathLength = (SwitchWidth - ThumbDiameter) - ThumbPadding
-
+fun getThumbPathLength(switchWidth: Dp,switchHeight: Dp):Dp =
+    (switchWidth - ThumbDiameter) - getThumbPadding(switchHeight)
 private val AnimationSpec = TweenSpec<Float>(durationMillis = 100)
 
 
