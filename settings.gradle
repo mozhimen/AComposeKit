@@ -27,6 +27,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "AComposeKit"
 include ':imagek'
+include ':basic'
+include ':windowk'
+include ':switchk'
+include ':windowk_test'
+include ':debugk_rebugger'
+include ':textk'
 //SwiftKit
 include ':SwiftKit'
 project(':SwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\SwiftKit")
@@ -42,9 +48,7 @@ include ':KUtilKit'
 project(':KUtilKit').projectDir = new File("D:\\Workspace\\GitHub\\KUtilKit")
 include ':KUtilKit:utilk_android'
 include ':KUtilKit:utilk_kotlin'
-include ':basic'
-include ':windowk'
-include ':switchk'
-include ':windowk_test'
-include ':debugk_rebugger'
-include ':textk'
+//ALibKit_Jetpack
+include ':ALibKit_Jetpack'
+project(':ALibKit_Jetpack').projectDir = new File("D:\\Workspace\\GitHub\\ALibKit_Jetpack")
+include ':ALibKit_Jetpack:emoji2'

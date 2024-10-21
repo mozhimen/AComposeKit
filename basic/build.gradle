@@ -33,6 +33,7 @@ android {
 
 dependencies {
     api project(':SwiftKit:composek')
+    api project(':KUtilKit:utilk_android')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
