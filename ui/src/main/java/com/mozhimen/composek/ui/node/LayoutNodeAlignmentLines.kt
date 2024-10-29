@@ -1,0 +1,201 @@
+package com.mozhimen.composek.ui.node
+
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.HorizontalAlignmentLine
+import kotlin.math.roundToInt
+
+/**
+ * @ClassName LayoutNodeAlignmentLines
+ * @Description TODO
+ * @Author mozhimen
+ * @Date 2024/10/29
+ * @Version 1.0
+ */
+internal sealed class AlignmentLines(val alignmentLinesOwner: AlignmentLinesOwner) {
+    /**
+     * `true` when the alignment lines needs to be recalculated because they might have changed.
+     */
+    internal var dirty = true
+
+    /**
+     * `true` when the alignment lines were used by the parent during measurement.
+     */
+    internal var usedDuringParentMeasurement = false
+
+    /**
+     * `true` when the alignment lines have been used by the parent during the current layout (or
+     * previous layout if there is no layout in progress).
+     */
+    internal var usedDuringParentLayout = false
+
+    /**
+     * `true` when the alignment lines were used by the parent during the last completed layout.
+     */
+    internal var previousUsedDuringParentLayout = false
+
+    /**
+     * `true` when the alignment lines were used by the modifier of the node during measurement.
+     */
+    internal var usedByModifierMeasurement = false
+
+    /**
+     * `true` when the alignment lines were used by the modifier of the node during measurement.
+     */
+    internal var usedByModifierLayout = false
+
+    /**
+     * `true` when the direct parent or our modifier relies on our alignment lines.
+     */
+    internal val queried
+        get() = usedDuringParentMeasurement ||
+                previousUsedDuringParentLayout || usedByModifierMeasurement ||
+                usedByModifierLayout
+
+    /**
+     * The closest layout node ancestor who was asked for alignment lines, either by the parent or
+     * their own modifier. If the owner stops being queried for alignment lines, we have to
+     * [recalculateQueryOwner] to find the new owner if one exists.
+     */
+    private var queryOwner: AlignmentLinesOwner? = null
+
+    /**
+     * Whether the alignment lines of this node are relevant (whether an ancestor depends on them).
+     */
+    internal val required: Boolean
+        get() {
+            recalculateQueryOwner()
+            return queryOwner != null
+        }
+
+    /**
+     * Updates the alignment lines query owner according to the current values of the
+     * alignmentUsedBy* of the layout nodes in the hierarchy.
+     */
+    fun recalculateQueryOwner() {
+        queryOwner = if (queried) {
+            alignmentLinesOwner
+        } else {
+            val parent = alignmentLinesOwner.parentAlignmentLinesOwner ?: return
+            val parentQueryOwner = parent.alignmentLines.queryOwner
+            if (parentQueryOwner != null && parentQueryOwner.alignmentLines.queried) {
+                parentQueryOwner
+            } else {
+                val owner = queryOwner
+                if (owner == null || owner.alignmentLines.queried) return
+                owner.parentAlignmentLinesOwner?.alignmentLines?.recalculateQueryOwner()
+                owner.parentAlignmentLinesOwner?.alignmentLines?.queryOwner
+            }
+        }
+    }
+
+    /**
+     * The alignment lines of this layout, inherited + intrinsic
+     */
+    private val alignmentLineMap: MutableMap<AlignmentLine, Int> = hashMapOf()
+
+    fun getLastCalculation(): Map<AlignmentLine, Int> = alignmentLineMap
+
+    protected abstract val NodeCoordinator.alignmentLinesMap: Map<AlignmentLine, Int>
+    protected abstract fun NodeCoordinator.getPositionFor(alignmentLine: AlignmentLine): Int
+
+    /**
+     * Returns the alignment line value for a given alignment line without affecting whether
+     * the flag for whether the alignment line was read.
+     */
+    private fun addAlignmentLine(
+        alignmentLine: AlignmentLine,
+        initialPosition: Int,
+        initialCoordinator: NodeCoordinator
+    ) {
+        var position = Offset(initialPosition.toFloat(), initialPosition.toFloat())
+        var coordinator = initialCoordinator
+        while (true) {
+            position = coordinator.calculatePositionInParent(position)
+            coordinator = coordinator.wrappedBy!!
+            if (coordinator == alignmentLinesOwner.innerCoordinator) break
+            if (alignmentLine in coordinator.alignmentLinesMap) {
+                val newPosition = coordinator.getPositionFor(alignmentLine)
+                position = Offset(newPosition.toFloat(), newPosition.toFloat())
+            }
+        }
+
+        val positionInContainer = if (alignmentLine is HorizontalAlignmentLine) {
+            position.y.roundToInt()
+        } else {
+            position.x.roundToInt()
+        }
+        // If the line was already provided by a previous child, merge the values.
+        alignmentLineMap[alignmentLine] = if (alignmentLine in alignmentLineMap) {
+            alignmentLine.merge(
+                alignmentLineMap.getValue(alignmentLine),
+                positionInContainer
+            )
+        } else {
+            positionInContainer
+        }
+    }
+
+    /**
+     * Recalculate alignment lines from all the children.
+     */
+    fun recalculate() {
+        alignmentLineMap.clear()
+        alignmentLinesOwner.forEachChildAlignmentLinesOwner { childOwner ->
+            if (!childOwner.isPlaced) return@forEachChildAlignmentLinesOwner
+            if (childOwner.alignmentLines.dirty) {
+                // It did not need relayout, but we still call layout to recalculate
+                // alignment lines.
+                childOwner.layoutChildren()
+            }
+            // Add alignment lines on the child node.
+            childOwner.alignmentLines.alignmentLineMap.forEach { (childLine, linePosition) ->
+                addAlignmentLine(childLine, linePosition, childOwner.innerCoordinator)
+            }
+
+            // Add alignment lines on the modifier of the child.
+            var coordinator = childOwner.innerCoordinator.wrappedBy!!
+            while (coordinator != alignmentLinesOwner.innerCoordinator) {
+                coordinator.alignmentLinesMap.keys.forEach { childLine ->
+                    addAlignmentLine(childLine, coordinator.getPositionFor(childLine), coordinator)
+                }
+                coordinator = coordinator.wrappedBy!!
+            }
+        }
+        alignmentLineMap += alignmentLinesOwner.innerCoordinator.alignmentLinesMap
+        dirty = false
+    }
+
+    /**
+     * Reset all the internal states.
+     */
+    internal fun reset() {
+        dirty = true
+        usedDuringParentMeasurement = false
+        previousUsedDuringParentLayout = false
+        usedDuringParentLayout = false
+        usedByModifierMeasurement = false
+        usedByModifierLayout = false
+        queryOwner = null
+    }
+
+    fun onAlignmentsChanged() {
+        dirty = true
+
+        val parent = alignmentLinesOwner.parentAlignmentLinesOwner ?: return
+        if (usedDuringParentMeasurement) {
+            parent.requestMeasure()
+        } else if (previousUsedDuringParentLayout || usedDuringParentLayout) {
+            parent.requestLayout()
+        }
+        if (usedByModifierMeasurement) {
+            alignmentLinesOwner.requestMeasure()
+        }
+        if (usedByModifierLayout) {
+            alignmentLinesOwner.requestLayout()
+        }
+        parent.alignmentLines.onAlignmentsChanged()
+    }
+
+    protected abstract fun NodeCoordinator.calculatePositionInParent(position: Offset): Offset
+}

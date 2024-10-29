@@ -52,3 +52,6 @@ include ':KUtilKit:utilk_kotlin'
 include ':ALibKit_Jetpack'
 project(':ALibKit_Jetpack').projectDir = new File("D:\\Workspace\\GitHub\\ALibKit_Jetpack")
 include ':ALibKit_Jetpack:emoji2'
+include ':material'
+include ':foundation'
+include ':ui'
