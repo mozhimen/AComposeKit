@@ -2,7 +2,6 @@ package com.mozhimen.composek.ui.layout
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.GraphicsLayerScope
-import androidx.compose.ui.layout.IntermediateMeasureScope
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -13,6 +12,7 @@ import com.mozhimen.composek.ui.Modifier
 import com.mozhimen.composek.ui.node.LayoutModifierNode
 import com.mozhimen.composek.ui.node.NodeMeasuringIntrinsics
 import com.mozhimen.composek.ui.node.Nodes
+import com.mozhimen.composek.ui.node.checkMeasuredSize
 import com.mozhimen.composek.ui.node.requireLayoutNode
 import com.mozhimen.composek.ui.node.visitAncestors
 

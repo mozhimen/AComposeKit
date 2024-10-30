@@ -1,11 +1,10 @@
 package com.mozhimen.composek.ui.focus
 
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.rotary.RotaryScrollEvent
 import androidx.compose.ui.unit.LayoutDirection
 import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.input.rotary.RotaryScrollEvent
 import com.mozhimen.composek.ui.node.FocusPropertiesModifierNode
 
 /**

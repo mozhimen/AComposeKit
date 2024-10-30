@@ -8,20 +8,23 @@ import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.currentCompositeKeyHash
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.graphics.GraphicsLayerScope
-import androidx.compose.ui.materialize
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.util.fastForEach
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.materialize
+import com.mozhimen.composek.ui.materializeWithCompositionLocalInjectionInternal
 import com.mozhimen.composek.ui.node.ComposeUiNode
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetCompositeKeyHash
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetMeasurePolicy
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetModifier
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetResolvedCompositionLocals
+import com.mozhimen.composek.ui.node.LayoutNode
+import com.mozhimen.composek.ui.node.checkMeasuredSize
 
 /**
  * @ClassName Layout
@@ -358,7 +361,7 @@ internal class IntrinsicsMeasureScope(
     ): MeasureResult {
         val w = width.coerceAtLeast(0)
         val h = height.coerceAtLeast(0)
-        androidx.compose.ui.node.checkMeasuredSize(w, h)
+        checkMeasuredSize(w, h)
         return object : MeasureResult {
             override val width: Int
                 get() = w

@@ -5,10 +5,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.ui.InternalComposeUiApi
 import androidx.compose.ui.SessionMutex
-import androidx.compose.ui.platform.PlatformTextInputMethodRequest
 import androidx.compose.ui.platform.PlatformTextInputModifierNode
-import androidx.compose.ui.platform.PlatformTextInputSession
-import androidx.compose.ui.platform.PlatformTextInputSessionScope
 import androidx.compose.ui.platform.establishTextInputSession
 import androidx.compose.ui.text.InternalTextApi
 import androidx.compose.ui.text.input.TextInputService

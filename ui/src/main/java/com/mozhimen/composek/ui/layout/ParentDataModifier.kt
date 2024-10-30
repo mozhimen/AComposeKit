@@ -1,6 +1,6 @@
 package com.mozhimen.composek.ui.layout
 
-import androidx.compose.ui.Modifier
+import com.mozhimen.composek.ui.Modifier
 import androidx.compose.ui.layout.IntrinsicMeasurable
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Density

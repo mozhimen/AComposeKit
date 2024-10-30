@@ -1,7 +1,5 @@
 package com.mozhimen.composek.ui.input.rotary
 
-import androidx.compose.ui.input.rotary.RotaryScrollEvent
-import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import com.mozhimen.composek.ui.node.DelegatableNode
 
 /**

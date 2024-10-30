@@ -4,6 +4,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import com.mozhimen.composek.ui.node.DelegatableNode
 import com.mozhimen.composek.ui.node.Nodes
 import com.mozhimen.composek.ui.node.visitSelfAndChildren
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Enter
 
 /**
  * @ClassName FocusRequesterModifierNode

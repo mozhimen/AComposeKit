@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalWindowInfo
 import com.mozhimen.composek.ui.input.pointer.EmptyPointerKeyboardModifiers
 import com.mozhimen.composek.ui.input.pointer.PointerKeyboardModifiers
 

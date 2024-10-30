@@ -1,6 +1,7 @@
 package com.mozhimen.composek.ui.focus
 
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Rect
 import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Down
 import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Enter
 import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Exit
@@ -17,6 +18,10 @@ import com.mozhimen.composek.ui.focus.FocusStateImpl.Inactive
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.LayoutDirection.Ltr
 import androidx.compose.ui.unit.LayoutDirection.Rtl
+import com.mozhimen.composek.ui.layout.findRootCoordinates
+import com.mozhimen.composek.ui.node.Nodes
+import com.mozhimen.composek.ui.node.visitAncestors
+import com.mozhimen.composek.ui.node.visitChildren
 
 /**
  * @ClassName FocusTraversal

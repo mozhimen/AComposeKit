@@ -1,6 +1,7 @@
 package com.mozhimen.composek.ui.layout
 
 import androidx.compose.runtime.Stable
+import com.mozhimen.composek.ui.node.getChildrenOfVirtualChildren
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.util.fastMap
 

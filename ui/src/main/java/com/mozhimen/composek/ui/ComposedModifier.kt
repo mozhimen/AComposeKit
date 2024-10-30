@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composer
 import androidx.compose.runtime.CompositionLocalMap
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import com.mozhimen.composek.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.materialize
 import androidx.compose.ui.platform.InspectorInfo

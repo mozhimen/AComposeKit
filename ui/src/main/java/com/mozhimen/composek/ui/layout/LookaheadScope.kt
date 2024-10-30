@@ -5,11 +5,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReusableComposeNode
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.InspectorInfo
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntSize
+import com.mozhimen.composek.ui.Modifier
 import com.mozhimen.composek.ui.node.LayoutNode
+import com.mozhimen.composek.ui.node.ModifierNodeElement
 import com.mozhimen.composek.ui.node.NodeCoordinator
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * @ClassName LookaheadScopeImpl
@@ -18,6 +23,7 @@ import com.mozhimen.composek.ui.node.NodeCoordinator
  * @Date 2024/10/29
  * @Version 1.0
  */
+
 /**
  * [LookaheadScope] starts a scope in which all layouts scope will receive a lookahead pass
  * preceding the main measure/layout pass. This lookahead pass will calculate the layout
@@ -49,6 +55,76 @@ fun LookaheadScope(content: @Composable @UiComposable LookaheadScope.() -> Unit)
             scope.content()
         }
     )
+}
+
+/**
+ * Creates an intermediate layout intended to help morph the layout from the current layout
+ * to the lookahead (i.e. pre-calculated future) layout.
+ *
+ * This modifier will be invoked _after_ lookahead pass and will have access to the lookahead
+ * results in [measure]. Therefore:
+ * 1) [intermediateLayout] measure/layout logic will not affect lookahead pass, but only be
+ * invoked during the main measure/layout pass,
+ * and 2) [measure] block can define intermediate changes that morphs the layout in the
+ * main pass gradually until it converges lookahead pass.
+ *
+ * @sample androidx.compose.ui.samples.IntermediateLayoutSample
+ */
+@ExperimentalComposeUiApi
+fun Modifier.intermediateLayout(
+    measure: IntermediateMeasureScope.(
+        measurable: Measurable,
+        constraints: Constraints,
+    ) -> MeasureResult,
+): Modifier = this then IntermediateLayoutElement(measure)
+
+@OptIn(ExperimentalComposeUiApi::class)
+private data class IntermediateLayoutElement(
+    val measure: IntermediateMeasureScope.(
+        measurable: Measurable,
+        constraints: Constraints,
+    ) -> MeasureResult,
+) : ModifierNodeElement<IntermediateLayoutModifierNode>() {
+    override fun create() = IntermediateLayoutModifierNode(measure)
+    override fun update(node: IntermediateLayoutModifierNode) {
+        node.measureBlock = measure
+    }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "intermediateLayout"
+        properties["measure"] = measure
+    }
+}
+
+/**
+ * [IntermediateMeasureScope] provides access to lookahead results to allow
+ * [intermediateLayout] to leverage lookahead results to define intermediate measurements
+ * and placements to gradually converge with lookahead.
+ *
+ * [IntermediateMeasureScope.lookaheadSize] provides the target size of the layout.
+ * [IntermediateMeasureScope] is also a [LookaheadScope], thus allowing layouts to
+ * read their lookahead [LayoutCoordinates] during placement using
+ * [LookaheadScope.toLookaheadCoordinates], as well as the lookahead [LayoutCoordinates] of the
+ * closest lookahead scope via [LookaheadScope.lookaheadScopeCoordinates].
+ * By knowing the target size and position, layout adjustments such as animations can be defined
+ * in [intermediateLayout] to morph the layout gradually in both size and position
+ * to arrive at its precalculated bounds.
+ *
+ * Note that [IntermediateMeasureScope] is the closest lookahead scope in the tree.
+ * This [LookaheadScope] enables convenient query of the layout's relative position to the
+ * [LookaheadScope]. Hence it becomes straightforward to animate position relative to the closest
+ * scope, which usually yields a natural looking animation, unless there are specific UX
+ * requirements to change position relative to a particular [LookaheadScope].
+ *
+ * [IntermediateMeasureScope] is a CoroutineScope, as a convenient scope for all the
+ * coroutine-based intermediate changes (e.g. animations) to be launched from.
+ */
+@ExperimentalComposeUiApi
+sealed interface IntermediateMeasureScope : LookaheadScope, CoroutineScope, MeasureScope {
+    /**
+     * Indicates the target size of the [intermediateLayout].
+     */
+    val lookaheadSize: IntSize
 }
 
 /**

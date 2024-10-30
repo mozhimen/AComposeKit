@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import com.mozhimen.composek.ui.node.LookaheadCapablePlaceable
+import com.mozhimen.composek.ui.node.Owner
 
 /**
  * @ClassName Placeable
@@ -352,6 +353,8 @@ internal fun PlacementScope(
 ): Placeable.PlacementScope =
     LookaheadCapablePlacementScope(lookaheadCapablePlaceable)
 
+internal fun PlacementScope(owner: Owner): Placeable.PlacementScope = OuterPlacementScope(owner)
+
 /**
  * PlacementScope used by almost all parts of Compose.
  */
@@ -374,4 +377,18 @@ private class LookaheadCapablePlacementScope(
             }
             return coords
         }
+}
+
+/**
+ * The PlacementScope that is used at the root of the compose layout hierarchy.
+ */
+private class OuterPlacementScope(val owner: Owner) : Placeable.PlacementScope() {
+    override val parentWidth: Int
+        get() = owner.root.width
+
+    override val parentLayoutDirection: LayoutDirection
+        get() = owner.layoutDirection
+
+    override val coordinates: LayoutCoordinates
+        get() = owner.root.outerCoordinator
 }

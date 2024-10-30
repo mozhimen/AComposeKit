@@ -1,12 +1,9 @@
 package com.mozhimen.composek.ui.focus
 
-import androidx.compose.ui.focus.FocusEventModifierNode
-import androidx.compose.ui.focus.FocusPropertiesModifierNode
-import androidx.compose.ui.focus.FocusTargetNode
-import androidx.compose.ui.focus.getFocusState
-import androidx.compose.ui.focus.refreshFocusEventNodes
-import androidx.compose.ui.node.Nodes
-import androidx.compose.ui.node.visitSelfAndChildren
+import com.mozhimen.composek.ui.node.FocusPropertiesModifierNode
+import com.mozhimen.composek.ui.node.Nodes
+import com.mozhimen.composek.ui.node.visitSelfAndChildren
+
 
 /**
  * @ClassName FocusInvalidationManager
@@ -71,7 +68,7 @@ internal class FocusInvalidationManager(
             // so that they don't have to keep track of whether they caused a focused item to be
             // removed (Which would cause it to lose focus).
             if (!focusEventNode.node.isAttached) {
-                focusEventNode.onFocusEvent(Inactive)
+                focusEventNode.onFocusEvent(FocusStateImpl.Inactive)
                 return@forEach
             }
 
@@ -104,7 +101,7 @@ internal class FocusInvalidationManager(
                     if (aggregatedNode) {
                         focusEventNode.getFocusState()
                     } else {
-                        focusTarget?.focusState ?: Inactive
+                        focusTarget?.focusState ?: FocusStateImpl.Inactive
                     }
                 )
             }

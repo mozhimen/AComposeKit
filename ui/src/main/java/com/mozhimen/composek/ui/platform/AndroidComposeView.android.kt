@@ -47,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.InternalComposeUiApi
-import androidx.compose.ui.SessionMutex
 import androidx.compose.ui.autofill.Autofill
 import androidx.compose.ui.autofill.AutofillTree
 import androidx.compose.ui.geometry.Offset
@@ -58,9 +57,8 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.setFrom
 import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.input.InputMode.Companion.Keyboard
-import androidx.compose.ui.input.InputMode.Companion.Touch
-import androidx.compose.ui.input.InputModeManager
+import com.mozhimen.composek.ui.input.InputMode.Companion.Keyboard
+import com.mozhimen.composek.ui.input.InputMode.Companion.Touch
 import androidx.compose.ui.input.key.Key.Companion.Back
 import androidx.compose.ui.input.key.Key.Companion.DirectionCenter
 import androidx.compose.ui.input.key.Key.Companion.DirectionDown
@@ -81,8 +79,8 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.node.InternalCoreApi
 import androidx.compose.ui.platform.AndroidViewConfiguration
 import androidx.compose.ui.platform.InspectorInfo
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.platform.ViewConfiguration
-import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.createFontFamilyResolver
@@ -109,6 +107,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.SessionMutex
 import com.mozhimen.composek.ui.autofill.AndroidAutofill
 import com.mozhimen.composek.ui.autofill.AutofillCallback
 import com.mozhimen.composek.ui.autofill.performAutofill
@@ -121,11 +120,15 @@ import com.mozhimen.composek.ui.draganddrop.DragAndDropNode
 import com.mozhimen.composek.ui.draganddrop.DragAndDropTransferData
 import com.mozhimen.composek.ui.focus.FocusOwner
 import com.mozhimen.composek.ui.focus.FocusOwnerImpl
+import com.mozhimen.composek.ui.input.InputModeManager
+import com.mozhimen.composek.ui.input.InputModeManagerImpl
 import com.mozhimen.composek.ui.input.key.onKeyEvent
 import com.mozhimen.composek.ui.input.pointer.AndroidPointerIcon
 import com.mozhimen.composek.ui.input.pointer.AndroidPointerIconType
+import com.mozhimen.composek.ui.input.pointer.MotionEventAdapter
 import com.mozhimen.composek.ui.input.pointer.PointerIcon
 import com.mozhimen.composek.ui.input.pointer.PointerIconService
+import com.mozhimen.composek.ui.input.pointer.PointerInputEventProcessor
 import com.mozhimen.composek.ui.input.pointer.PointerKeyboardModifiers
 import com.mozhimen.composek.ui.node.LayoutNodeDrawScope
 import com.mozhimen.composek.ui.node.Owner
@@ -137,8 +140,12 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 import com.mozhimen.composek.ui.input.pointer.PositionCalculator
 import com.mozhimen.composek.ui.input.pointer.ProcessResult
+import com.mozhimen.composek.ui.input.rotary.RotaryScrollEvent
 import com.mozhimen.composek.ui.input.rotary.onRotaryScrollEvent
+import com.mozhimen.composek.ui.layout.Placeable
+import com.mozhimen.composek.ui.layout.PlacementScope
 import com.mozhimen.composek.ui.layout.RootMeasurePolicy
+import com.mozhimen.composek.ui.modifier.ModifierLocalManager
 import com.mozhimen.composek.ui.node.LayoutNode
 import com.mozhimen.composek.ui.node.MeasureAndLayoutDelegate
 import com.mozhimen.composek.ui.node.ModifierNodeElement
@@ -147,7 +154,18 @@ import com.mozhimen.composek.ui.node.OwnedLayer
 import com.mozhimen.composek.ui.node.OwnerSnapshotObserver
 import com.mozhimen.composek.ui.node.RootForTest
 import com.mozhimen.composek.ui.platform.MotionEventVerifierApi29.isValidMotionEvent
+import com.mozhimen.composek.ui.text.input.TextInputServiceAndroid
 import com.mozhimen.composek.ui.viewinterop.AndroidViewHolder
+import com.mozhimen.composek.ui.focus.FocusDirection
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Down
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Exit
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Left
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Next
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Previous
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Right
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Up
+import com.mozhimen.composek.ui.hapticfeedback.PlatformHapticFeedback
+import com.mozhimen.composek.ui.semantics.findClosestParentNode
 
 /**
  * Allows tests to inject a custom [PlatformTextInputService].

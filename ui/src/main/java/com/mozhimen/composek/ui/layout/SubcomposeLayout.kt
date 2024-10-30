@@ -26,7 +26,6 @@ import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetCompositeKeyHash
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetModifier
 import com.mozhimen.composek.ui.node.ComposeUiNode.Companion.SetResolvedCompositionLocals
 import com.mozhimen.composek.ui.node.LayoutNode
-import com.mozhimen.composek.ui.node.LayoutNode.LayoutState
 import com.mozhimen.composek.ui.node.checkMeasuredSize
 import com.mozhimen.composek.ui.node.requireOwner
 import com.mozhimen.composek.ui.platform.createSubcomposition

@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.mozhimen.composek.ui.Modifier
 import com.mozhimen.composek.ui.layout.AlignmentLine
+import com.mozhimen.composek.ui.layout.HorizontalAlignmentLine
 import com.mozhimen.composek.ui.layout.IntermediateLayoutModifierNode
 import com.mozhimen.composek.ui.layout.Placeable
 

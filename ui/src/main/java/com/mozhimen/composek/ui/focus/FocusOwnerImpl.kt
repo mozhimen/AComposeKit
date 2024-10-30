@@ -2,49 +2,40 @@ package com.mozhimen.composek.ui.focus
 
 import androidx.collection.MutableLongSet
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.CustomDestinationResult.Cancelled
-import androidx.compose.ui.focus.CustomDestinationResult.None
-import androidx.compose.ui.focus.CustomDestinationResult.RedirectCancelled
-import androidx.compose.ui.focus.CustomDestinationResult.Redirected
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusDirection.Companion.Exit
-import androidx.compose.ui.focus.FocusDirection.Companion.Next
-import androidx.compose.ui.focus.FocusDirection.Companion.Previous
-import androidx.compose.ui.focus.FocusEventModifierNode
-import androidx.compose.ui.focus.FocusInvalidationManager
-import androidx.compose.ui.focus.FocusPropertiesModifierNode
-import androidx.compose.ui.focus.FocusRequester.Companion.Cancel
-import androidx.compose.ui.focus.FocusRequester.Companion.Default
-import androidx.compose.ui.focus.FocusTargetNode
-import androidx.compose.ui.focus.FocusTransactionManager
-import androidx.compose.ui.focus.clearFocus
-import androidx.compose.ui.focus.customFocusSearch
-import androidx.compose.ui.focus.findActiveFocusNode
-import androidx.compose.ui.focus.focusRect
-import androidx.compose.ui.focus.focusSearch
-import androidx.compose.ui.focus.performCustomClearFocus
-import androidx.compose.ui.focus.performCustomRequestFocus
-import androidx.compose.ui.focus.performRequestFocus
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType.Companion.KeyDown
 import androidx.compose.ui.input.key.KeyEventType.Companion.KeyUp
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.rotary.RotaryScrollEvent
-import androidx.compose.ui.node.DelegatableNode
-import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.node.NodeKind
-import androidx.compose.ui.node.Nodes
-import androidx.compose.ui.node.ancestors
-import androidx.compose.ui.node.dispatchForKind
-import androidx.compose.ui.node.nearestAncestor
-import androidx.compose.ui.node.visitLocalDescendants
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachReversed
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Exit
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Next
+import com.mozhimen.composek.ui.focus.FocusDirection.Companion.Previous
+import com.mozhimen.composek.ui.focus.FocusRequester.Companion.Cancel
+import com.mozhimen.composek.ui.focus.FocusRequester.Companion.Default
+import com.mozhimen.composek.ui.focus.CustomDestinationResult.Cancelled
+import com.mozhimen.composek.ui.focus.CustomDestinationResult.None
+import com.mozhimen.composek.ui.focus.CustomDestinationResult.RedirectCancelled
+import com.mozhimen.composek.ui.focus.CustomDestinationResult.Redirected
+import com.mozhimen.composek.ui.focus.FocusStateImpl.Active
+import com.mozhimen.composek.ui.focus.FocusStateImpl.ActiveParent
+import com.mozhimen.composek.ui.focus.FocusStateImpl.Captured
+import com.mozhimen.composek.ui.focus.FocusStateImpl.Inactive
+import com.mozhimen.composek.ui.input.rotary.RotaryScrollEvent
+import com.mozhimen.composek.ui.node.DelegatableNode
+import com.mozhimen.composek.ui.node.FocusPropertiesModifierNode
+import com.mozhimen.composek.ui.node.ModifierNodeElement
+import com.mozhimen.composek.ui.node.NodeKind
+import com.mozhimen.composek.ui.node.Nodes
+import com.mozhimen.composek.ui.node.ancestors
+import com.mozhimen.composek.ui.node.dispatchForKind
+import com.mozhimen.composek.ui.node.nearestAncestor
+import com.mozhimen.composek.ui.node.visitLocalDescendants
 
 /**
  * @ClassName FocusOwnerImpl
@@ -104,8 +95,8 @@ internal class FocusOwnerImpl(onRequestApplyChangesListener: (() -> Unit) -> Uni
     override fun takeFocus() {
         // If the focus state is not Inactive, it indicates that the focus state is already
         // set (possibly by dispatchWindowFocusChanged). So we don't update the state.
-        if (rootFocusNode.focusState == Inactive) {
-            rootFocusNode.focusState = Active
+        if (rootFocusNode.focusState == FocusStateImpl.Inactive) {
+            rootFocusNode.focusState = FocusStateImpl.Active
             // TODO(b/152535715): propagate focus to children based on child focusability.
             //  moveFocus(FocusDirection.Enter)
         }

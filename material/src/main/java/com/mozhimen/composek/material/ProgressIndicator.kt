@@ -12,7 +12,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.progressSemantics
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
@@ -163,7 +162,7 @@ fun CircularProgressIndicator(
     )
     Canvas(
         modifier
-//            .progressSemantics()
+            .progressSemantics()
             .size(CircularIndicatorDiameter)
     ) {
         drawCircularIndicatorBackground(backgroundColor, stroke)

@@ -11,10 +11,10 @@ import androidx.compose.ui.semantics.onImeAction
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.semantics.textSelectionRange
 import androidx.compose.ui.state.ToggleableState
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import com.mozhimen.composek.ui.text.AnnotatedString
 import kotlin.reflect.KProperty
 
 /**
