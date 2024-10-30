@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.mozhimen.composek.ui'
+    namespace 'com.mozhimen.composek.material3'
     compileSdk 34
 
     defaultConfig {
@@ -34,7 +34,6 @@ android {
 dependencies {
     implementation project(':SwiftKit:composek')
     implementation project(':KUtilKit:utilk_android')
-    implementation project(':ALibKit_Jetpack:emoji2')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

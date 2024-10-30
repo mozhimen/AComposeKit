@@ -1,17 +1,20 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'com.mozhimen.composek.ui'
+    namespace 'com.mozhimen.composek.test'
     compileSdk 34
 
     defaultConfig {
+        applicationId "com.mozhimen.composek.test"
         minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -27,14 +30,22 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.10'
+    }
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 }
 
 dependencies {
     implementation project(':SwiftKit:composek')
-    implementation project(':KUtilKit:utilk_android')
-    implementation project(':ALibKit_Jetpack:emoji2')
+    implementation project(':SwiftKit:basick')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

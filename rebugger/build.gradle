@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.mozhimen.composek.ui'
+    namespace 'com.mozhimen.composek.rebugger'
     compileSdk 34
 
     defaultConfig {
@@ -27,14 +27,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures.compose = true
+    buildFeatures {
+        compose = true
+    }
     composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
 }
 
 dependencies {
-    implementation project(':SwiftKit:composek')
-    implementation project(':KUtilKit:utilk_android')
-    implementation project(':ALibKit_Jetpack:emoji2')
+    api 'io.github.theapache64:rebugger:1.0.0-rc02'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    api project(project.path.replace(project.name, '') + ':basic')
+    implementation project(':SwiftKit:composek')
     implementation project(':KUtilKit:utilk_android')
 
     testImplementation 'junit:junit:4.13.2'

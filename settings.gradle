@@ -26,13 +26,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AComposeKit"
-include ':imagek'
-include ':basic'
-include ':windowk'
-include ':switchk'
-include ':windowk_test'
-include ':debugk_rebugger'
-include ':textk'
+include ':app'
+include ':rebugger'
 //SwiftKit
 include ':SwiftKit'
 project(':SwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\SwiftKit")
@@ -55,3 +50,5 @@ include ':ALibKit_Jetpack:emoji2'
 include ':material'
 include ':foundation'
 include ':ui'
+include ':material3'
+include ':runtime'

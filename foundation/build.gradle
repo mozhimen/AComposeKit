@@ -32,8 +32,9 @@ android {
 }
 
 dependencies {
-    api project(project.path.replace(project.name, '') + ':basic')
+    implementation project(':SwiftKit:composek')
     implementation project(':KUtilKit:utilk_android')
+    implementation project(':ALibKit_Jetpack:emoji2')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
