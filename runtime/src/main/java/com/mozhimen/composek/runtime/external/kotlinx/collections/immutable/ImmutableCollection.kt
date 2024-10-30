@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable
+package com.mozhimen.composek.runtime.external.kotlinx.collections.immutable
 
 /**
  * @ClassName ImmutableCollection

@@ -38,9 +38,8 @@ import com.mozhimen.composek.foundation.text.selection.HandleReferencePoint.TopM
 import com.mozhimen.composek.foundation.text.selection.HandleReferencePoint.TopRight
 import com.mozhimen.composek.foundation.text.selection.SelectionHandleAnchor.Left
 import com.mozhimen.composek.foundation.text.selection.SelectionHandleAnchor.Right
-import com.mozhimen.composek.textk.Handle.SelectionEnd
-import com.mozhimen.composek.textk.Handle.SelectionStart
-import com.mozhimen.composek.ui.window.Popup2
+import com.mozhimen.composek.foundation.text.Handle.SelectionEnd
+import com.mozhimen.composek.foundation.text.Handle.SelectionStart
 
 /**
  * @ClassName AndroidSelectionHandles

@@ -11,9 +11,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.dp
-import com.mozhimen.composek.textk.selection.HandleReferencePoint
-import com.mozhimen.composek.textk.selection.createHandleImage
-import com.mozhimen.composek.textk.selection.HandlePopup
+import com.mozhimen.composek.foundation.text.selection.HandleReferencePoint
+import com.mozhimen.composek.foundation.text.selection.createHandleImage
+import com.mozhimen.composek.foundation.text.selection.HandlePopup
 /**
  * @ClassName AndroidCursorHandle
  * @Description TODO

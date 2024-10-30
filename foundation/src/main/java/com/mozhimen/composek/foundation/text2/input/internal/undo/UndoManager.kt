@@ -1,4 +1,4 @@
-package com.mozhimen.composek.foundation.textk2.input.internal.undo
+package com.mozhimen.composek.foundation.text2.input.internal.undo
 
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope

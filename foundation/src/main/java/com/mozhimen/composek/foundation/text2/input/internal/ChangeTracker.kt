@@ -1,9 +1,9 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.mozhimen.composek.foundation.textk2.input.internal
+package com.mozhimen.composek.foundation.text2.input.internal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import com.mozhimen.composek.textk2.input.TextFieldBuffer.ChangeList
+import com.mozhimen.composek.foundation.text2.input.TextFieldBuffer.ChangeList
 import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.compose.ui.text.TextRange
 

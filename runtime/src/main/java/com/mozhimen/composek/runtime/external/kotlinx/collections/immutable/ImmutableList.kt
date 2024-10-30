@@ -1,6 +1,6 @@
-package com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable
+package com.mozhimen.composek.runtime.external.kotlinx.collections.immutable
 
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.internal.ListImplementation
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.internal.ListImplementation
 
 /**
  * @ClassName ImmutableList

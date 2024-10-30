@@ -3,7 +3,7 @@ package com.mozhimen.composek.runtime
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.runtime.snapshots.StateFactoryMarker
-import com.mozhimen.composek.basic.runtime.snapshots.SnapshotStateList
+import com.mozhimen.composek.runtime.snapshots.SnapshotStateList
 
 /**
  * @ClassName SnapshotState

@@ -1,9 +1,9 @@
-package com.mozhimen.composek.basic.runtime.snapshots
+package com.mozhimen.composek.runtime.snapshots
 
 import android.util.Log
 import androidx.compose.runtime.Stable
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.PersistentList
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.persistentListOf
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.PersistentList
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.persistentListOf
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 

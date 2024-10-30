@@ -1,11 +1,11 @@
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Stable
-import com.mozhimen.composek.textk.appendCodePointX
-import com.mozhimen.composek.textk2.input.internal.OffsetMappingCalculator
-import com.mozhimen.composek.textk2.input.internal.charCount
-import com.mozhimen.composek.textk2.input.internal.codePointAt
+import com.mozhimen.composek.foundation.text.appendCodePointX
+import com.mozhimen.composek.foundation.text2.input.internal.OffsetMappingCalculator
+import com.mozhimen.composek.foundation.text2.input.internal.charCount
+import com.mozhimen.composek.foundation.text2.input.internal.codePointAt
 
 /**
  * @ClassName CodepointTransformation

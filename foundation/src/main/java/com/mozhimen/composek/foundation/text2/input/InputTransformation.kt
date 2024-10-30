@@ -1,4 +1,4 @@
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.KeyboardOptions

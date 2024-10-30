@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
-import com.mozhimen.composek.textk.selection.visibleBounds
+import com.mozhimen.composek.foundation.text.selection.visibleBounds
 import kotlin.math.max
 import kotlin.math.min
 

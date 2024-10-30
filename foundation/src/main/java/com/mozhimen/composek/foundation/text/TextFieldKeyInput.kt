@@ -15,11 +15,11 @@ import androidx.compose.ui.text.input.FinishComposingTextCommand
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
-import com.mozhimen.composek.textk.selection.TextFieldSelectionManager
-import com.mozhimen.composek.textk.selection.TextPreparedSelectionState
-import com.mozhimen.composek.textk.KeyCommand
-import com.mozhimen.composek.textk.selection.BaseTextPreparedSelection.Companion.NoCharacterFound
-import com.mozhimen.composek.textk.selection.TextFieldPreparedSelection
+import com.mozhimen.composek.foundation.text.selection.TextFieldSelectionManager
+import com.mozhimen.composek.foundation.text.selection.TextPreparedSelectionState
+import com.mozhimen.composek.foundation.text.KeyCommand
+import com.mozhimen.composek.foundation.text.selection.BaseTextPreparedSelection.Companion.NoCharacterFound
+import com.mozhimen.composek.foundation.text.selection.TextFieldPreparedSelection
 
 /**
  * @ClassName TextFieldKeyInput

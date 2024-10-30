@@ -1,8 +1,8 @@
 package com.mozhimen.composek.foundation.text
 
 import androidx.compose.runtime.Composable
-import com.mozhimen.composek.textk.selection.SelectionManager
-import com.mozhimen.composek.textk.selection.TextFieldSelectionManager
+import com.mozhimen.composek.foundation.text.selection.SelectionManager
+import com.mozhimen.composek.foundation.text.selection.TextFieldSelectionManager
 
 /**
  * @ClassName ContextMenu

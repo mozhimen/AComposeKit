@@ -1,7 +1,7 @@
 package com.mozhimen.composek.runtime
 
-import com.mozhimen.composek.basic.runtime.internal.ThreadMap
-import com.mozhimen.composek.basic.runtime.internal.emptyThreadMap
+import com.mozhimen.composek.runtime.internal.ThreadMap
+import com.mozhimen.composek.runtime.internal.emptyThreadMap
 import java.util.concurrent.atomic.AtomicInteger
 
 /**

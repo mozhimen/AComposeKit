@@ -1,8 +1,8 @@
-package com.mozhimen.composek.basic.runtime.snapshots
+package com.mozhimen.composek.runtime.snapshots
 
 import androidx.compose.runtime.snapshots.Snapshot
-import com.mozhimen.composek.basic.runtime.WeakReference
-import com.mozhimen.composek.basic.runtime.identityHashCode
+import com.mozhimen.composek.runtime.WeakReference
+import com.mozhimen.composek.runtime.identityHashCode
 import org.jetbrains.annotations.TestOnly
 
 /**

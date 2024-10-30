@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.internal
+package com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.internal
 
 /**
  * @ClassName MutabilityOwnership

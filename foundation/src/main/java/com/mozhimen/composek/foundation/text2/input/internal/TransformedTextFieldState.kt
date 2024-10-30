@@ -1,16 +1,16 @@
-package com.mozhimen.composek.foundation.textk2.input.internal
+package com.mozhimen.composek.foundation.text2.input.internal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.text.TextRange
-import com.mozhimen.composek.textk2.input.CodepointTransformation
-import com.mozhimen.composek.textk2.input.InputTransformation
-import com.mozhimen.composek.textk2.input.TextFieldCharSequence
-import com.mozhimen.composek.textk2.input.TextFieldState
-import com.mozhimen.composek.textk2.input.internal.undo.TextFieldEditUndoBehavior
-import com.mozhimen.composek.textk2.input.toVisualText
+import com.mozhimen.composek.foundation.text2.input.CodepointTransformation
+import com.mozhimen.composek.foundation.text2.input.InputTransformation
+import com.mozhimen.composek.foundation.text2.input.TextFieldCharSequence
+import com.mozhimen.composek.foundation.text2.input.TextFieldState
+import com.mozhimen.composek.foundation.text2.input.internal.undo.TextFieldEditUndoBehavior
+import com.mozhimen.composek.foundation.text2.input.toVisualText
 import kotlinx.coroutines.suspendCancellableCoroutine
 /**
  * @ClassName TransformedTextFieldState

@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.runtime.snapshots
+package com.mozhimen.composek.runtime.snapshots
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
@@ -10,15 +10,14 @@ import androidx.compose.runtime.snapshots.asContextElement
 import androidx.compose.runtime.snapshots.readable
 import androidx.compose.runtime.snapshots.withCurrent
 import androidx.compose.runtime.snapshots.writable
-import com.mozhimen.composek.basic.runtime.AtomicInt
-import com.mozhimen.composek.basic.runtime.AtomicReference
-import com.mozhimen.composek.basic.runtime.SnapshotThreadLocal
-import com.mozhimen.composek.basic.runtime.collection.IdentityArraySet
-import com.mozhimen.composek.basic.runtime.internal.JvmDefaultWithCompatibility
-import com.mozhimen.composek.basic.runtime.snapshots.Snapshot.Companion.takeMutableSnapshot
-import com.mozhimen.composek.basic.runtime.snapshots.Snapshot.Companion.takeSnapshot
-import com.mozhimen.composek.basic.runtime.snapshots.SnapshotApplyResult.Failure
-import com.mozhimen.composek.basic.runtime.snapshots.SnapshotApplyResult.Success
+import com.mozhimen.composek.runtime.AtomicInt
+import com.mozhimen.composek.runtime.AtomicReference
+import com.mozhimen.composek.runtime.SnapshotThreadLocal
+import com.mozhimen.composek.runtime.collection.IdentityArraySet
+import com.mozhimen.composek.runtime.snapshots.Snapshot.Companion.takeMutableSnapshot
+import com.mozhimen.composek.runtime.snapshots.Snapshot.Companion.takeSnapshot
+import com.mozhimen.composek.runtime.snapshots.SnapshotApplyResult.Failure
+import com.mozhimen.composek.runtime.snapshots.SnapshotApplyResult.Success
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

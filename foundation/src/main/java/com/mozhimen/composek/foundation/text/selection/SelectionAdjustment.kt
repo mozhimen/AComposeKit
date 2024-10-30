@@ -1,9 +1,9 @@
 package com.mozhimen.composek.foundation.text.selection
 
 import androidx.compose.ui.text.TextRange
-import com.mozhimen.composek.textk.findFollowingBreak
-import com.mozhimen.composek.textk.findPrecedingBreak
-import com.mozhimen.composek.textk.getParagraphBoundary
+import com.mozhimen.composek.foundation.text.findFollowingBreak
+import com.mozhimen.composek.foundation.text.findPrecedingBreak
+import com.mozhimen.composek.foundation.text.getParagraphBoundary
 
 /**
  * @ClassName SelectionAdjustment

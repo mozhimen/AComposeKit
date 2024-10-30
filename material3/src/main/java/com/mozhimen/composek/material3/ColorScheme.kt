@@ -25,7 +25,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
-import com.mozhimen.composek.basic.material3.tokens.ColorSchemeKeyTokens
+import com.mozhimen.composek.material3.tokens.ColorSchemeKeyTokens
 
 /**
  * @ClassName ColorScheme

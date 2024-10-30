@@ -1,7 +1,7 @@
-package com.mozhimen.composek.foundation.textk2.input.internal
+package com.mozhimen.composek.foundation.text2.input.internal
 
-import com.mozhimen.composek.textk.findFollowingBreak
-import com.mozhimen.composek.textk.findPrecedingBreak
+import com.mozhimen.composek.foundation.text.findFollowingBreak
+import com.mozhimen.composek.foundation.text.findPrecedingBreak
 /**
  * @ClassName EditCommand
  * @Description TODO

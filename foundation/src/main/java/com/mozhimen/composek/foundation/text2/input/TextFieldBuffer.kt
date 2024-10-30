@@ -1,9 +1,9 @@
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import com.mozhimen.composek.textk2.input.TextFieldBuffer.ChangeList
-import com.mozhimen.composek.textk2.input.internal.ChangeTracker
-import com.mozhimen.composek.textk2.input.internal.PartialGapBuffer
+import com.mozhimen.composek.foundation.text2.input.TextFieldBuffer.ChangeList
+import com.mozhimen.composek.foundation.text2.input.internal.ChangeTracker
+import com.mozhimen.composek.foundation.text2.input.internal.PartialGapBuffer
 import androidx.compose.ui.text.TextRange
 
 /**

@@ -1,4 +1,4 @@
-package com.mozhimen.composek.foundation.textk2.input.internal
+package com.mozhimen.composek.foundation.text2.input.internal
 
 import androidx.compose.ui.text.TextRange
 

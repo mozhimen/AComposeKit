@@ -1,6 +1,6 @@
-package com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable
+package com.mozhimen.composek.runtime.external.kotlinx.collections.immutable
 
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.persistentVectorOf
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.persistentVectorOf
 
 
 /**

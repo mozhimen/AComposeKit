@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.runtime.snapshots
+package com.mozhimen.composek.runtime.snapshots
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract

@@ -12,10 +12,10 @@ import androidx.compose.ui.text.input.SetSelectionCommand
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.ResolvedTextDirection
 import com.mozhimen.composek.foundation.text.TextLayoutResultProxy
-import com.mozhimen.composek.textk.findFollowingBreak
-import com.mozhimen.composek.textk.findParagraphEnd
-import com.mozhimen.composek.textk.findParagraphStart
-import com.mozhimen.composek.textk.findPrecedingBreak
+import com.mozhimen.composek.foundation.text.findFollowingBreak
+import com.mozhimen.composek.foundation.text.findParagraphEnd
+import com.mozhimen.composek.foundation.text.findParagraphStart
+import com.mozhimen.composek.foundation.text.findPrecedingBreak
 
 /**
  * @ClassName TextPreparedSelection

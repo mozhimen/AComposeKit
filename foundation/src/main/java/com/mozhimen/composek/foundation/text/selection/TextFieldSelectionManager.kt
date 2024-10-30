@@ -33,16 +33,16 @@ import androidx.compose.ui.text.style.ResolvedTextDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.mozhimen.composek.basic.foundation.PlatformMagnifierFactory
+import com.mozhimen.composek.foundation.PlatformMagnifierFactory
 import kotlin.math.absoluteValue
 import kotlin.math.max
 import kotlin.math.min
-import com.mozhimen.composek.basic.foundation.isPlatformMagnifierSupported
-import com.mozhimen.composek.basic.foundation.magnifier
-import com.mozhimen.composek.textk.DefaultCursorThickness
-import com.mozhimen.composek.textk.Handle
-import com.mozhimen.composek.textk.HandleState
-import com.mozhimen.composek.textk.TextFieldState
+import com.mozhimen.composek.foundation.isPlatformMagnifierSupported
+import com.mozhimen.composek.foundation.magnifier
+import com.mozhimen.composek.foundation.text.DefaultCursorThickness
+import com.mozhimen.composek.foundation.text.Handle
+import com.mozhimen.composek.foundation.text.HandleState
+import com.mozhimen.composek.foundation.text.TextFieldState
 import com.mozhimen.composek.foundation.text.UndoManager
 import com.mozhimen.composek.foundation.text.ValidatingEmptyOffsetMappingIdentity
 

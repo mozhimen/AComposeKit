@@ -3,7 +3,7 @@ package com.mozhimen.composek.foundation.text.selection
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.unit.dp
-import com.mozhimen.composek.textk.Handle
+import com.mozhimen.composek.foundation.text.Handle
 
 /**
  * @ClassName SelectionHandles

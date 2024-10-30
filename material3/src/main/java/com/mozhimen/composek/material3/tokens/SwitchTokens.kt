@@ -1,6 +1,8 @@
-package com.mozhimen.composek.basic.material3.tokens
+package com.mozhimen.composek.material3.tokens
 
 import androidx.compose.ui.unit.dp
+import com.mozhimen.composek.material3.tokens.ColorSchemeKeyTokens
+import com.mozhimen.composek.material3.tokens.ShapeKeyTokens
 
 /**
  * @ClassName SwitchTokens

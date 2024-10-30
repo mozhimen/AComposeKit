@@ -1,9 +1,9 @@
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
-import com.mozhimen.composek.textk2.input.internal.toCharArray
+import com.mozhimen.composek.foundation.text2.input.internal.toCharArray
 
 /**
  * @ClassName TextFieldCharSequence

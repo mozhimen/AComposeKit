@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.selection.triStateToggleable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -15,6 +14,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.platform.inspectable
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.toggleableState
 import androidx.compose.ui.state.ToggleableState
 
@@ -219,5 +219,10 @@ fun Modifier.triStateToggleable(
         onClick = onClick
     ).semantics {
         this.toggleableState = state
+        this.stateDescription = when (state) {
+            ToggleableState.On -> "On"
+            ToggleableState.Off -> "Off"
+            ToggleableState.Indeterminate -> "Indeterminate"
+        }
     }
 }

@@ -1,6 +1,6 @@
-package com.mozhimen.composek.basic.runtime.collection
+package com.mozhimen.composek.runtime.collection
 
-import com.mozhimen.composek.basic.runtime.identityHashCode
+import com.mozhimen.composek.runtime.identityHashCode
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 

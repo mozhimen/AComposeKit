@@ -1,4 +1,4 @@
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.getValue
@@ -8,12 +8,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.text.substring
 import com.mozhimen.composek.foundation.text.SNAPSHOTS_INTERVAL_MILLIS
-import com.mozhimen.composek.textk2.input.internal.undo.TextDeleteType
-import com.mozhimen.composek.textk2.input.internal.undo.TextEditType
-import com.mozhimen.composek.textk2.input.internal.undo.TextUndoOperation
-import com.mozhimen.composek.textk2.input.internal.undo.UndoManager
-import com.mozhimen.composek.textk2.input.internal.undo.redo
-import com.mozhimen.composek.textk2.input.internal.undo.undo
+import com.mozhimen.composek.foundation.text2.input.internal.undo.TextDeleteType
+import com.mozhimen.composek.foundation.text2.input.internal.undo.TextEditType
+import com.mozhimen.composek.foundation.text2.input.internal.undo.TextUndoOperation
+import com.mozhimen.composek.foundation.text2.input.internal.undo.UndoManager
+import com.mozhimen.composek.foundation.text2.input.internal.undo.redo
+import com.mozhimen.composek.foundation.text2.input.internal.undo.undo
 
 /**
  * @ClassName TextUndoManager

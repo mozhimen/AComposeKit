@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.mozhimen.composek.foundation.textk2.input
+package com.mozhimen.composek.foundation.text2.input
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,9 +22,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.TextFieldValue
-import com.mozhimen.composek.textk2.input.internal.EditingBuffer
-import com.mozhimen.composek.textk2.input.internal.UndoState
-import com.mozhimen.composek.textk2.input.internal.undo.TextFieldEditUndoBehavior
+import com.mozhimen.composek.foundation.text2.input.internal.EditingBuffer
+import com.mozhimen.composek.foundation.text2.input.internal.UndoState
+import com.mozhimen.composek.foundation.text2.input.internal.undo.TextFieldEditUndoBehavior
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 

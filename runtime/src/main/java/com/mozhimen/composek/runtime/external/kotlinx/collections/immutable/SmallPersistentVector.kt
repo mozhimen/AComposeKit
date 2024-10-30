@@ -1,13 +1,13 @@
-package com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable
+package com.mozhimen.composek.runtime.external.kotlinx.collections.immutable
 
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.AbstractPersistentList
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.BufferIterator
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.MAX_BUFFER_SIZE
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.MAX_BUFFER_SIZE_MINUS_ONE
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.PersistentVector
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.PersistentVectorBuilder
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.implementations.immutableList.presizedBufferWith
-import com.mozhimen.composek.basic.runtime.external.kotlinx.collections.immutable.internal.ListImplementation
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.AbstractPersistentList
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.BufferIterator
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.MAX_BUFFER_SIZE
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.MAX_BUFFER_SIZE_MINUS_ONE
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.PersistentVector
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.PersistentVectorBuilder
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.implementations.immutableList.presizedBufferWith
+import com.mozhimen.composek.runtime.external.kotlinx.collections.immutable.internal.ListImplementation
 import com.mozhimen.kotlin.utilk.kotlin.collections.UtilKCollections
 
 /**

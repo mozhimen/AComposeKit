@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.material3.tokens
+package com.mozhimen.composek.material3.tokens
 
 /**
  * @ClassName ShapeKeyTokens

@@ -43,13 +43,13 @@ import androidx.compose.ui.util.fastFold
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.util.fastMapNotNull
-import com.mozhimen.composek.basic.foundation.PlatformMagnifierFactory
-import com.mozhimen.composek.basic.foundation.isPlatformMagnifierSupported
-import com.mozhimen.composek.basic.foundation.magnifier
-import com.mozhimen.composek.textk.Handle
-import com.mozhimen.composek.textk.KeyCommand
-import com.mozhimen.composek.textk.platformDefaultKeyMapping
-import com.mozhimen.composek.textk2.input.internal.coerceIn
+import com.mozhimen.composek.foundation.PlatformMagnifierFactory
+import com.mozhimen.composek.foundation.isPlatformMagnifierSupported
+import com.mozhimen.composek.foundation.magnifier
+import com.mozhimen.composek.foundation.text.Handle
+import com.mozhimen.composek.foundation.text.KeyCommand
+import com.mozhimen.composek.foundation.text.platformDefaultKeyMapping
+import com.mozhimen.composek.foundation.text2.input.internal.coerceIn
 import kotlin.math.absoluteValue
 
 /**
