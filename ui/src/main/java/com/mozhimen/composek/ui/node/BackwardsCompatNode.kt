@@ -1,61 +1,15 @@
 package com.mozhimen.composek.ui.node
 
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BuildDrawCacheParams
 import androidx.compose.ui.draw.DrawCacheModifier
 import androidx.compose.ui.draw.DrawModifier
-import androidx.compose.ui.focus.FocusEventModifier
-import androidx.compose.ui.focus.FocusEventModifierNode
-import androidx.compose.ui.focus.FocusOrder
-import androidx.compose.ui.focus.FocusOrderModifier
-import androidx.compose.ui.focus.FocusProperties
-import androidx.compose.ui.focus.FocusPropertiesModifierNode
-import androidx.compose.ui.focus.FocusRequesterModifier
-import androidx.compose.ui.focus.FocusRequesterModifierNode
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputModifier
-import androidx.compose.ui.layout.IntrinsicMeasurable
-import androidx.compose.ui.layout.IntrinsicMeasureScope
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.LayoutModifier
-import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.MeasureResult
-import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.layout.OnGloballyPositionedModifier
-import androidx.compose.ui.layout.OnPlacedModifier
-import androidx.compose.ui.layout.OnRemeasuredModifier
-import androidx.compose.ui.layout.ParentDataModifier
-import androidx.compose.ui.layout.RemeasurementModifier
-import androidx.compose.ui.modifier.BackwardsCompatLocalMap
-import androidx.compose.ui.modifier.ModifierLocal
 import androidx.compose.ui.modifier.ModifierLocalConsumer
-import androidx.compose.ui.modifier.ModifierLocalMap
-import androidx.compose.ui.modifier.ModifierLocalModifierNode
-import androidx.compose.ui.modifier.ModifierLocalProvider
-import androidx.compose.ui.modifier.ModifierLocalReadScope
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.node.DetachedModifierLocalReadScope
-import androidx.compose.ui.node.DrawModifierNode
-import androidx.compose.ui.node.GlobalPositionAwareModifierNode
-import androidx.compose.ui.node.LayoutAwareModifierNode
-import androidx.compose.ui.node.LayoutModifierNode
-import androidx.compose.ui.node.LayoutModifierNodeCoordinator
-import androidx.compose.ui.node.Nodes
-import androidx.compose.ui.node.ParentDataModifierNode
-import androidx.compose.ui.node.PointerInputModifierNode
-import androidx.compose.ui.node.SemanticsModifierNode
-import androidx.compose.ui.node.calculateNodeKindSetFrom
-import androidx.compose.ui.node.invalidateDraw
-import androidx.compose.ui.node.invalidateLayer
-import androidx.compose.ui.node.isChainUpdate
-import androidx.compose.ui.node.requireCoordinator
-import androidx.compose.ui.node.requireLayoutNode
-import androidx.compose.ui.node.visitAncestors
 import androidx.compose.ui.semantics.SemanticsConfiguration
 import androidx.compose.ui.semantics.SemanticsModifier
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
@@ -64,6 +18,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.toSize
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.focus.FocusEventModifierNode
+import com.mozhimen.composek.ui.focus.FocusRequesterModifierNode
+import com.mozhimen.composek.ui.modifier.ModifierLocalModifierNode
+import com.mozhimen.composek.ui.modifier.ModifierLocalProvider
+import com.mozhimen.composek.ui.modifier.ModifierLocalReadScope
 
 /**
  * @ClassName BackwardsCompatNode
@@ -433,4 +393,22 @@ internal class BackwardsCompatNode(element: Modifier.Element) :
     }
 
     override fun toString(): String = element.toString()
+}
+
+private val DetachedModifierLocalReadScope = object : ModifierLocalReadScope {
+    override val <T> ModifierLocal<T>.current: T
+        get() = defaultFactory()
+}
+
+private val onDrawCacheReadsChanged = { it: BackwardsCompatNode ->
+    it.onDrawCacheReadsChanged()
+}
+
+private val updateModifierLocalConsumer = { it: BackwardsCompatNode ->
+    it.updateModifierLocalConsumer()
+}
+
+private fun BackwardsCompatNode.isChainUpdate(): Boolean {
+    val tailNode = requireLayoutNode().nodes.tail as TailModifierNode
+    return tailNode.attachHasBeenRun
 }

@@ -1,10 +1,5 @@
 package com.mozhimen.composek.ui.focus
 
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.captureFocus
-import androidx.compose.ui.focus.freeFocus
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 
 /**
  * @ClassName FocusState

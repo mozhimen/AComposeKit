@@ -1,9 +1,8 @@
 package com.mozhimen.composek.ui.layout
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.layout.HorizontalAlignmentLine
-import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.VerticalAlignmentLine
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * @ClassName AlignmentLine
@@ -55,6 +54,14 @@ sealed class AlignmentLine(
 }
 
 /**
+ * Merges two values of the current [alignment line][AlignmentLine].
+ * This is used when a layout inherits multiple values for the same [AlignmentLine]
+ * from different children, so the position of the line within the layout will be computed
+ * by merging the children values using the provided [AlignmentLine.merger].
+ */
+internal fun AlignmentLine.merge(position1: Int, position2: Int) = merger(position1, position2)
+
+/**
  * A vertical [AlignmentLine]. Defines a vertical offset line that can be used by parent layouts
  * usually to align or position their children horizontally. The positions of the alignment lines
  * will be automatically inherited by parent layouts from their content, and the [merger] will
@@ -64,3 +71,30 @@ sealed class AlignmentLine(
  * @param merger How to merge two alignment line values defined by different children
  */
 class VerticalAlignmentLine(merger: (Int, Int) -> Int) : AlignmentLine(merger)
+
+/**
+ * A horizontal [AlignmentLine]. Defines an horizontal offset line that can be used by parent
+ * layouts usually to align or position their children vertically. Text baselines (`FirstBaseline`
+ * and `LastBaseline`) are representative examples of [HorizontalAlignmentLine]s. For example,
+ * they can be used by `Row`, to align its children by baseline, or by `paddingFrom` to
+ * achieve a layout with a specific from the top to the baseline of the text content.
+ * The positions of the alignment lines will be automatically inherited by parent layouts from
+ * their content, and the [merger] will be used to merge multiple line positions when more
+ * than one child provides a specific [HorizontalAlignmentLine]. See [AlignmentLine]
+ * for more details.
+ *
+ * @param merger How to merge two alignment line values defined by different children
+ */
+class HorizontalAlignmentLine(merger: (Int, Int) -> Int) : AlignmentLine(merger)
+
+/**
+ * [AlignmentLine] defined by the baseline of a first line of a
+ * [androidx.compose.foundation.text.BasicText]
+ */
+val FirstBaseline = HorizontalAlignmentLine(::min)
+
+/**
+ * [AlignmentLine] defined by the baseline of the last line of a
+ * [androidx.compose.foundation.text.BasicText]
+ */
+val LastBaseline = HorizontalAlignmentLine(::max)

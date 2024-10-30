@@ -8,13 +8,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.isFinite
 import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.DefaultCameraDistance
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.findRootCoordinates
-import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
@@ -24,7 +22,15 @@ import androidx.compose.ui.unit.minus
 import androidx.compose.ui.unit.plus
 import androidx.compose.ui.unit.toSize
 import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.graphics.ReusableGraphicsLayerScope
+import com.mozhimen.composek.ui.layout.AlignmentLine
 import com.mozhimen.composek.ui.layout.LayoutCoordinates
+import com.mozhimen.composek.ui.layout.LookaheadLayoutCoordinates
+import com.mozhimen.composek.ui.layout.Measurable
+import com.mozhimen.composek.ui.layout.MeasureResult
+import com.mozhimen.composek.ui.layout.Placeable
+import com.mozhimen.composek.ui.layout.findRootCoordinates
+import com.mozhimen.composek.ui.layout.positionInRoot
 
 /**
  * @ClassName NodeCoordinator
@@ -1240,4 +1246,74 @@ internal abstract class NodeCoordinator(
                 )
             }
     }
+}
+
+/**
+ * These are the components of a layer that changes the position and may lead
+ * to an OnGloballyPositionedCallback.
+ */
+private class LayerPositionalProperties {
+    private var scaleX: Float = 1f
+    private var scaleY: Float = 1f
+    private var translationX: Float = 0f
+    private var translationY: Float = 0f
+    private var rotationX: Float = 0f
+    private var rotationY: Float = 0f
+    private var rotationZ: Float = 0f
+    private var cameraDistance: Float = DefaultCameraDistance
+    private var transformOrigin: TransformOrigin = TransformOrigin.Center
+
+    fun copyFrom(other: LayerPositionalProperties) {
+        scaleX = other.scaleX
+        scaleY = other.scaleY
+        translationX = other.translationX
+        translationY = other.translationY
+        rotationX = other.rotationX
+        rotationY = other.rotationY
+        rotationZ = other.rotationZ
+        cameraDistance = other.cameraDistance
+        transformOrigin = other.transformOrigin
+    }
+
+    fun copyFrom(scope: GraphicsLayerScope) {
+        scaleX = scope.scaleX
+        scaleY = scope.scaleY
+        translationX = scope.translationX
+        translationY = scope.translationY
+        rotationX = scope.rotationX
+        rotationY = scope.rotationY
+        rotationZ = scope.rotationZ
+        cameraDistance = scope.cameraDistance
+        transformOrigin = scope.transformOrigin
+    }
+
+    fun hasSameValuesAs(other: LayerPositionalProperties): Boolean {
+        return scaleX == other.scaleX &&
+                scaleY == other.scaleY &&
+                translationX == other.translationX &&
+                translationY == other.translationY &&
+                rotationX == other.rotationX &&
+                rotationY == other.rotationY &&
+                rotationZ == other.rotationZ &&
+                cameraDistance == other.cameraDistance &&
+                transformOrigin == other.transformOrigin
+    }
+}
+
+private fun DelegatableNode.nextUntil(
+    type: NodeKind<*>,
+    stopType: NodeKind<*>
+): Modifier.Node? {
+    val child = node.child ?: return null
+    if (child.aggregateChildKindSet and type.mask == 0) return null
+    var next: Modifier.Node? = child
+    while (next != null) {
+        val kindSet = next.kindSet
+        if (kindSet and stopType.mask != 0) return null
+        if (kindSet and type.mask != 0) {
+            return next
+        }
+        next = next.child
+    }
+    return null
 }

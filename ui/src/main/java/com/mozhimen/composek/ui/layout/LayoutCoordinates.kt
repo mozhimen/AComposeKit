@@ -3,19 +3,13 @@ package com.mozhimen.composek.ui.layout
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Matrix
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.IntSize
+import com.mozhimen.composek.ui.node.NodeCoordinator
 
-/**
- * @ClassName LayoutCoordinates
- * @Description TODO
- * @Author mozhimen
- * @Date 2024/10/29
- * @Version 1.0
- */
 /**
  * A holder of the measured bounds for the [Layout].
  */
+//@JvmDefaultWithCompatibility
 interface LayoutCoordinates {
     /**
      * The size of this layout in the local coordinates space.
@@ -98,4 +92,84 @@ interface LayoutCoordinates {
      * or [AlignmentLine.Unspecified] if the line is not provided.
      */
     operator fun get(alignmentLine: AlignmentLine): Int
+}
+
+/**
+ * The position of this layout inside the root composable.
+ */
+fun LayoutCoordinates.positionInRoot(): Offset = localToRoot(Offset.Zero)
+
+/**
+ * The position of this layout relative to the window.
+ */
+fun LayoutCoordinates.positionInWindow(): Offset = localToWindow(Offset.Zero)
+
+/**
+ * The boundaries of this layout inside the root composable.
+ */
+fun LayoutCoordinates.boundsInRoot(): Rect =
+    findRootCoordinates().localBoundingBoxOf(this)
+
+/**
+ * The boundaries of this layout relative to the window's origin.
+ */
+fun LayoutCoordinates.boundsInWindow(): Rect {
+    val root = findRootCoordinates()
+    val bounds = boundsInRoot()
+    val rootWidth = root.size.width.toFloat()
+    val rootHeight = root.size.height.toFloat()
+    val boundsLeft = bounds.left.coerceIn(0f, rootWidth)
+    val boundsTop = bounds.top.coerceIn(0f, rootHeight)
+    val boundsRight = bounds.right.coerceIn(0f, rootWidth)
+    val boundsBottom = bounds.bottom.coerceIn(0f, rootHeight)
+    if (boundsLeft == boundsRight || boundsTop == boundsBottom) {
+        return Rect.Zero
+    }
+    val topLeft = root.localToWindow(Offset(boundsLeft, boundsTop))
+    val topRight = root.localToWindow(Offset(boundsRight, boundsTop))
+    val bottomRight = root.localToWindow(Offset(boundsRight, boundsBottom))
+    val bottomLeft = root.localToWindow(Offset(boundsLeft, boundsBottom))
+    val left = minOf(topLeft.x, topRight.x, bottomLeft.x, bottomRight.x)
+    val top = minOf(topLeft.y, topRight.y, bottomLeft.y, bottomRight.y)
+    val right = maxOf(topLeft.x, topRight.x, bottomLeft.x, bottomRight.x)
+    val bottom = maxOf(topLeft.y, topRight.y, bottomLeft.y, bottomRight.y)
+    return Rect(left, top, right, bottom)
+}
+
+/**
+ * Returns the position of the top-left in the parent's content area or (0, 0)
+ * for the root.
+ */
+fun LayoutCoordinates.positionInParent(): Offset =
+    parentLayoutCoordinates?.localPositionOf(this, Offset.Zero) ?: Offset.Zero
+
+/**
+ * Returns the bounding box of the child in the parent's content area, including any clipping
+ * done with respect to the parent. For the root, the bounds is positioned at (0, 0) and sized
+ * to the size of the root.
+ */
+fun LayoutCoordinates.boundsInParent(): Rect =
+    parentLayoutCoordinates?.localBoundingBoxOf(this)
+        ?: Rect(0f, 0f, size.width.toFloat(), size.height.toFloat())
+
+/**
+ * Walks up the [LayoutCoordinates] hierarchy to find the [LayoutCoordinates] whose
+ * [LayoutCoordinates.parentCoordinates] is `null` and returns it. If
+ * [LayoutCoordinates.isAttached], this will have the size of the
+ * [ComposeView][androidx.compose.ui.platform.ComposeView].
+ */
+fun LayoutCoordinates.findRootCoordinates(): LayoutCoordinates {
+    var root = this
+    var parent = root.parentLayoutCoordinates
+    while (parent != null) {
+        root = parent
+        parent = root.parentLayoutCoordinates
+    }
+    var rootCoordinator = root as? NodeCoordinator ?: return root
+    var parentCoordinator = rootCoordinator.wrappedBy
+    while (parentCoordinator != null) {
+        rootCoordinator = parentCoordinator
+        parentCoordinator = parentCoordinator.wrappedBy
+    }
+    return rootCoordinator
 }

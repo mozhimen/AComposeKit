@@ -1,6 +1,5 @@
 package com.mozhimen.composek.ui.layout
 
-import androidx.compose.ui.layout.IntrinsicMeasurable
 import androidx.compose.ui.unit.Constraints
 
 /**

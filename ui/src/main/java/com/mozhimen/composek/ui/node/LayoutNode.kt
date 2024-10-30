@@ -6,57 +6,50 @@ import androidx.compose.runtime.collection.MutableVector
 import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.InternalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Canvas
-import androidx.compose.ui.input.pointer.PointerInputFilter
-import androidx.compose.ui.input.pointer.PointerInputModifier
-import androidx.compose.ui.layout.IntrinsicMeasurable
-import androidx.compose.ui.layout.IntrinsicMeasureScope
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.LayoutInfo
-import androidx.compose.ui.layout.LayoutNodeSubcompositionsState
-import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.MeasurePolicy
-import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.layout.ModifierInfo
-import androidx.compose.ui.layout.OnGloballyPositionedModifier
-import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.Remeasurement
-import androidx.compose.ui.node.DebugChanges
-import androidx.compose.ui.node.DefaultDensity
-import androidx.compose.ui.node.HitTestResult
-import androidx.compose.ui.node.InteroperableComposeUiNode
-import androidx.compose.ui.node.IntrinsicsPolicy
-import androidx.compose.ui.node.LayoutModifierNodeCoordinator
-import androidx.compose.ui.node.LayoutNodeDrawScope
-import androidx.compose.ui.node.LayoutNodeLayoutDelegate
-import androidx.compose.ui.node.MutableVectorWithMutationTracking
-import androidx.compose.ui.node.OnPositionedDispatcher
-import androidx.compose.ui.node.autoInvalidateInsertedNode
-import androidx.compose.ui.node.autoInvalidateUpdatedNode
-import androidx.compose.ui.node.or
-import androidx.compose.ui.node.requestRemeasure
-import androidx.compose.ui.node.requireCoordinator
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.platform.ViewConfiguration
-import androidx.compose.ui.platform.simpleIdentityToString
-import androidx.compose.ui.semantics.SemanticsConfiguration
-import androidx.compose.ui.semantics.generateSemanticsId
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.viewinterop.InteropView
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.layout.IntrinsicMeasurable
+import com.mozhimen.composek.ui.layout.IntrinsicMeasureScope
+import com.mozhimen.composek.ui.layout.LayoutCoordinates
+import com.mozhimen.composek.ui.layout.LayoutInfo
+import com.mozhimen.composek.ui.layout.LayoutNodeSubcompositionsState
+import com.mozhimen.composek.ui.layout.Measurable
+import com.mozhimen.composek.ui.layout.MeasurePolicy
+import com.mozhimen.composek.ui.layout.MeasureScope
+import com.mozhimen.composek.ui.layout.ModifierInfo
+import com.mozhimen.composek.ui.layout.Remeasurement
+import com.mozhimen.composek.ui.platform.simpleIdentityToString
+import com.mozhimen.composek.ui.semantics.generateSemanticsId
+import com.mozhimen.composek.ui.viewinterop.InteropViewFactoryHolder
+import com.mozhimen.composek.ui.node.LayoutNode.LayoutState.Idle
+import com.mozhimen.composek.ui.node.LayoutNode.LayoutState.LayingOut
+import com.mozhimen.composek.ui.node.LayoutNode.LayoutState.LookaheadLayingOut
+import com.mozhimen.composek.ui.node.LayoutNode.LayoutState.LookaheadMeasuring
+import com.mozhimen.composek.ui.node.LayoutNode.LayoutState.Measuring
+import com.mozhimen.composek.ui.node.Nodes.PointerInput
+import com.mozhimen.composek.ui.node.Nodes.FocusEvent
+import com.mozhimen.composek.ui.node.Nodes.FocusProperties
+import com.mozhimen.composek.ui.node.Nodes.FocusTarget
+import com.mozhimen.composek.ui.semantics.SemanticsConfiguration
 
 /**
- * @ClassName LayoutNode
- * @Description TODO
- * @Author mozhimen
- * @Date 2024/10/29
- * @Version 1.0
+ * Enable to log changes to the LayoutNode tree.  This logging is quite chatty.
  */
+@Suppress("ConstPropertyName")
+private const val DebugChanges = false
+
+private val DefaultDensity = Density(1f)
+
 /**
  * An element in the layout hierarchy, built with compose UI.
  */
@@ -782,7 +775,7 @@ internal class LayoutNode(
         get() = measurePassDelegate.zIndex
 
     /**
-     * The inner state associated with [androidx.compose.ui.layout.SubcomposeLayout].
+     * The inner state associated with [SubcomposeLayout].
      */
     internal var subcompositionsState: LayoutNodeSubcompositionsState? = null
 
@@ -1452,4 +1445,13 @@ internal fun LayoutNode.requireOwner(): Owner {
         "LayoutNode should be attached to an owner"
     }
     return owner
+}
+
+/**
+ * Inserts a child [LayoutNode] at a last index. If this LayoutNode [LayoutNode.isAttached]
+ * then [child] will become [LayoutNode.isAttached] also. [child] must have a `null`
+ * [LayoutNode.parent].
+ */
+internal fun LayoutNode.add(child: LayoutNode) {
+    insertAt(children.size, child)
 }

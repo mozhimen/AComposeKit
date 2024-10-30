@@ -9,6 +9,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.util.LongSparseArray
 import android.util.SparseArray
+import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_DOWN
@@ -33,8 +34,10 @@ import android.view.inputmethod.InputConnection
 import android.view.translation.ViewTranslationCallback
 import android.view.translation.ViewTranslationRequest
 import android.view.translation.ViewTranslationResponse
+import androidx.annotation.DoNotInline
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
+import androidx.collection.ArraySet
 import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -44,33 +47,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.InternalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.SessionMutex
 import androidx.compose.ui.autofill.Autofill
 import androidx.compose.ui.autofill.AutofillTree
-import androidx.compose.ui.draganddrop.DragAndDropTransferData
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusDirection.Companion.Down
-import androidx.compose.ui.focus.FocusDirection.Companion.Exit
-import androidx.compose.ui.focus.FocusDirection.Companion.Left
-import androidx.compose.ui.focus.FocusDirection.Companion.Next
-import androidx.compose.ui.focus.FocusDirection.Companion.Previous
-import androidx.compose.ui.focus.FocusDirection.Companion.Right
-import androidx.compose.ui.focus.FocusDirection.Companion.Up
-import androidx.compose.ui.focus.FocusOwner
-import androidx.compose.ui.focus.FocusOwnerImpl
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.CanvasHolder
 import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.setFrom
 import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.PlatformHapticFeedback
 import androidx.compose.ui.input.InputMode.Companion.Keyboard
 import androidx.compose.ui.input.InputMode.Companion.Touch
 import androidx.compose.ui.input.InputModeManager
-import androidx.compose.ui.input.InputModeManagerImpl
 import androidx.compose.ui.input.key.Key.Companion.Back
 import androidx.compose.ui.input.key.Key.Companion.DirectionCenter
 import androidx.compose.ui.input.key.Key.Companion.DirectionDown
@@ -87,82 +77,23 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType.Companion.KeyDown
 import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.pointer.MotionEventAdapter
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.PointerIconService
-import androidx.compose.ui.input.pointer.PointerInputEventProcessor
-import androidx.compose.ui.input.pointer.PointerKeyboardModifiers
-import androidx.compose.ui.input.pointer.PositionCalculator
-import androidx.compose.ui.input.pointer.ProcessResult
-import androidx.compose.ui.input.rotary.RotaryScrollEvent
-import androidx.compose.ui.input.rotary.onRotaryScrollEvent
-import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.PlacementScope
-import androidx.compose.ui.layout.RootMeasurePolicy
-import androidx.compose.ui.modifier.ModifierLocalManager
 import androidx.compose.ui.node.InternalCoreApi
-import androidx.compose.ui.node.LayoutNode
-import androidx.compose.ui.node.LayoutNode.UsageByParent
-import androidx.compose.ui.node.LayoutNodeDrawScope
-import androidx.compose.ui.node.MeasureAndLayoutDelegate
-import androidx.compose.ui.node.Nodes
-import androidx.compose.ui.node.OwnedLayer
-import androidx.compose.ui.node.Owner
-import androidx.compose.ui.node.OwnerSnapshotObserver
-import androidx.compose.ui.node.RootForTest
-import androidx.compose.ui.platform.AndroidAccessibilityManager
-import androidx.compose.ui.platform.AndroidClipboardManager
-import androidx.compose.ui.platform.AndroidComposeViewAccessibilityDelegateCompat
-import androidx.compose.ui.platform.AndroidComposeViewForceDarkModeQ
-import androidx.compose.ui.platform.AndroidComposeViewStartDragAndDropN
-import androidx.compose.ui.platform.AndroidComposeViewTranslationCallbackS
-import androidx.compose.ui.platform.AndroidComposeViewVerificationHelperMethodsN
-import androidx.compose.ui.platform.AndroidComposeViewVerificationHelperMethodsO
-import androidx.compose.ui.platform.AndroidFontResourceLoader
-import androidx.compose.ui.platform.AndroidPlatformTextInputSession
-import androidx.compose.ui.platform.AndroidTextToolbar
 import androidx.compose.ui.platform.AndroidViewConfiguration
-import androidx.compose.ui.platform.AndroidViewsHandler
-import androidx.compose.ui.platform.CalculateMatrixToWindowApi21
-import androidx.compose.ui.platform.CalculateMatrixToWindowApi29
-import androidx.compose.ui.platform.DelegatingSoftwareKeyboardController
-import androidx.compose.ui.platform.DragAndDropModifierOnDragListener
-import androidx.compose.ui.platform.DrawChildContainer
-import androidx.compose.ui.platform.MotionEventVerifierApi29.isValidMotionEvent
-import androidx.compose.ui.platform.PlatformTextInputSessionScope
-import androidx.compose.ui.platform.RenderNodeLayer
-import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.platform.TextToolbar
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.ViewConfiguration
-import androidx.compose.ui.platform.ViewLayer
-import androidx.compose.ui.platform.ViewLayerContainer
 import androidx.compose.ui.platform.ViewRootForTest
-import androidx.compose.ui.platform.WeakCache
-import androidx.compose.ui.platform.WindowInfo
-import androidx.compose.ui.platform.WindowInfoImpl
-import androidx.compose.ui.platform.ifDebug
-import androidx.compose.ui.platform.invertTo
-import androidx.compose.ui.platform.layoutDirectionFromInt
-import androidx.compose.ui.platform.localeLayoutDirection
-import androidx.compose.ui.platform.platformTextInputServiceInterceptor
-import androidx.compose.ui.platform.preTranslate
-import androidx.compose.ui.platform.semanticsIdToView
-import androidx.compose.ui.semantics.EmptySemanticsElement
-import androidx.compose.ui.semantics.SemanticsOwner
-import androidx.compose.ui.semantics.findClosestParentNode
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.createFontFamilyResolver
+import androidx.compose.ui.text.input.PlatformTextInputService
 import androidx.compose.ui.text.input.TextInputService
-import androidx.compose.ui.text.input.TextInputServiceAndroid
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.util.fastLastOrNull
 import androidx.compose.ui.util.trace
-import androidx.compose.ui.viewinterop.AndroidViewHolder
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.InputDeviceCompat.SOURCE_ROTARY_ENCODER
 import androidx.core.view.MotionEventCompat.AXIS_SCROLL
@@ -177,18 +108,53 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.autofill.AndroidAutofill
+import com.mozhimen.composek.ui.autofill.AutofillCallback
+import com.mozhimen.composek.ui.autofill.performAutofill
+import com.mozhimen.composek.ui.autofill.populateViewStructure
+import com.mozhimen.composek.ui.draganddrop.ComposeDragShadowBuilder
+import com.mozhimen.composek.ui.draganddrop.DragAndDropEvent
+import com.mozhimen.composek.ui.draganddrop.DragAndDropManager
+import com.mozhimen.composek.ui.draganddrop.DragAndDropModifierNode
+import com.mozhimen.composek.ui.draganddrop.DragAndDropNode
+import com.mozhimen.composek.ui.draganddrop.DragAndDropTransferData
+import com.mozhimen.composek.ui.focus.FocusOwner
+import com.mozhimen.composek.ui.focus.FocusOwnerImpl
+import com.mozhimen.composek.ui.input.key.onKeyEvent
+import com.mozhimen.composek.ui.input.pointer.AndroidPointerIcon
+import com.mozhimen.composek.ui.input.pointer.AndroidPointerIconType
+import com.mozhimen.composek.ui.input.pointer.PointerIcon
+import com.mozhimen.composek.ui.input.pointer.PointerIconService
+import com.mozhimen.composek.ui.input.pointer.PointerKeyboardModifiers
+import com.mozhimen.composek.ui.node.LayoutNodeDrawScope
+import com.mozhimen.composek.ui.node.Owner
+import com.mozhimen.composek.ui.semantics.EmptySemanticsElement
+import com.mozhimen.composek.ui.semantics.SemanticsOwner
 import java.lang.reflect.Method
 import java.util.function.Consumer
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
+import com.mozhimen.composek.ui.input.pointer.PositionCalculator
+import com.mozhimen.composek.ui.input.pointer.ProcessResult
+import com.mozhimen.composek.ui.input.rotary.onRotaryScrollEvent
+import com.mozhimen.composek.ui.layout.RootMeasurePolicy
+import com.mozhimen.composek.ui.node.LayoutNode
+import com.mozhimen.composek.ui.node.MeasureAndLayoutDelegate
+import com.mozhimen.composek.ui.node.ModifierNodeElement
+import com.mozhimen.composek.ui.node.Nodes
+import com.mozhimen.composek.ui.node.OwnedLayer
+import com.mozhimen.composek.ui.node.OwnerSnapshotObserver
+import com.mozhimen.composek.ui.node.RootForTest
+import com.mozhimen.composek.ui.platform.MotionEventVerifierApi29.isValidMotionEvent
+import com.mozhimen.composek.ui.viewinterop.AndroidViewHolder
 
 /**
- * @ClassName AndroidComposeView
- * @Description TODO
- * @Author mozhimen
- * @Date 2024/10/29
- * @Version 1.0
+ * Allows tests to inject a custom [PlatformTextInputService].
  */
+internal var platformTextInputServiceInterceptor:
+            (PlatformTextInputService) -> PlatformTextInputService = { it }
+
 /**
  * @ClassName AndroidComposeView
  * @Description TODO
@@ -940,7 +906,7 @@ internal class AndroidComposeView(
                 // new size, but the View hierarchy will react only on the next frame.
                 var node = nodeToRemeasure
                 while (node != null &&
-                    node.measuredByParent == UsageByParent.InMeasureBlock &&
+                    node.measuredByParent == LayoutNode.UsageByParent.InMeasureBlock &&
                     node.childSizeCanAffectParentSize()
                 ) {
                     node = node.parent
@@ -2023,5 +1989,334 @@ internal class AndroidComposeView(
             androidComposeView.composeAccessibilityDelegate.onClearTranslation()
             return true
         }
+    }
+}
+
+/**
+ * Return the layout direction set by the [Locale][java.util.Locale].
+ *
+ * A convenience getter that translates [Configuration.getLayoutDirection] result into
+ * [LayoutDirection] instance.
+ */
+internal val Configuration.localeLayoutDirection: LayoutDirection
+    // We don't use the attached View's layout direction here since that layout direction may not
+    // be resolved since the composables may be composed without attaching to the RootViewImpl.
+    // In Jetpack Compose, use the locale layout direction (i.e. layoutDirection came from
+    // configuration) as a default layout direction.
+    get() = layoutDirectionFromInt(layoutDirection)
+
+private fun layoutDirectionFromInt(layoutDirection: Int): LayoutDirection = when (layoutDirection) {
+    android.util.LayoutDirection.LTR -> LayoutDirection.Ltr
+    android.util.LayoutDirection.RTL -> LayoutDirection.Rtl
+    else -> LayoutDirection.Ltr
+}
+
+/**
+ * These classes are here to ensure that the classes that use this API will get verified and can be
+ * AOT compiled. It is expected that this class will soft-fail verification, but the classes
+ * which use this method will pass.
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+private object AndroidComposeViewVerificationHelperMethodsO {
+    @RequiresApi(Build.VERSION_CODES.O)
+    @DoNotInline
+    fun focusable(view: View, focusable: Int, defaultFocusHighlightEnabled: Boolean) {
+        view.focusable = focusable
+        // not to add the default focus highlight to the whole compose view
+        view.defaultFocusHighlightEnabled = defaultFocusHighlightEnabled
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.N)
+private object AndroidComposeViewVerificationHelperMethodsN {
+    @DoNotInline
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun setPointerIcon(view: View, icon: PointerIcon?) {
+        val iconToSet = when (icon) {
+            is AndroidPointerIcon ->
+                icon.pointerIcon
+
+            is AndroidPointerIconType ->
+                android.view.PointerIcon.getSystemIcon(view.context, icon.type)
+
+            else ->
+                android.view.PointerIcon.getSystemIcon(
+                    view.context,
+                    android.view.PointerIcon.TYPE_DEFAULT
+                )
+        }
+
+        if (view.pointerIcon != iconToSet) {
+            view.pointerIcon = iconToSet
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
+private object AndroidComposeViewForceDarkModeQ {
+    @DoNotInline
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun disallowForceDark(view: View) {
+        view.isForceDarkAllowed = false
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.S)
+internal object AndroidComposeViewTranslationCallbackS {
+    @DoNotInline
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun setViewTranslationCallback(view: View, translationCallback: ViewTranslationCallback) {
+        view.setViewTranslationCallback(translationCallback)
+    }
+
+    @DoNotInline
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun clearViewTranslationCallback(view: View) {
+        view.clearViewTranslationCallback()
+    }
+}
+
+/**
+ * Sets this [Matrix] to be the result of this * [other]
+ */
+private fun Matrix.preTransform(other: Matrix) {
+    val v00 = dot(other, 0, this, 0)
+    val v01 = dot(other, 0, this, 1)
+    val v02 = dot(other, 0, this, 2)
+    val v03 = dot(other, 0, this, 3)
+    val v10 = dot(other, 1, this, 0)
+    val v11 = dot(other, 1, this, 1)
+    val v12 = dot(other, 1, this, 2)
+    val v13 = dot(other, 1, this, 3)
+    val v20 = dot(other, 2, this, 0)
+    val v21 = dot(other, 2, this, 1)
+    val v22 = dot(other, 2, this, 2)
+    val v23 = dot(other, 2, this, 3)
+    val v30 = dot(other, 3, this, 0)
+    val v31 = dot(other, 3, this, 1)
+    val v32 = dot(other, 3, this, 2)
+    val v33 = dot(other, 3, this, 3)
+    this[0, 0] = v00
+    this[0, 1] = v01
+    this[0, 2] = v02
+    this[0, 3] = v03
+    this[1, 0] = v10
+    this[1, 1] = v11
+    this[1, 2] = v12
+    this[1, 3] = v13
+    this[2, 0] = v20
+    this[2, 1] = v21
+    this[2, 2] = v22
+    this[2, 3] = v23
+    this[3, 0] = v30
+    this[3, 1] = v31
+    this[3, 2] = v32
+    this[3, 3] = v33
+}
+
+/**
+ * Like [android.graphics.Matrix.preTranslate], for a Compose [Matrix]
+ */
+private fun Matrix.preTranslate(x: Float, y: Float, tmpMatrix: Matrix) {
+    tmpMatrix.reset()
+    tmpMatrix.translate(x, y)
+    preTransform(tmpMatrix)
+}
+
+// Taken from Matrix.kt
+private fun dot(m1: Matrix, row: Int, m2: Matrix, column: Int): Float {
+    return m1[row, 0] * m2[0, column] +
+            m1[row, 1] * m2[1, column] +
+            m1[row, 2] * m2[2, column] +
+            m1[row, 3] * m2[3, column]
+}
+
+private interface CalculateMatrixToWindow {
+    /**
+     * Calculates the matrix from [view] to screen coordinates and returns the value in [matrix].
+     */
+    fun calculateMatrixToWindow(view: View, matrix: Matrix)
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
+private class CalculateMatrixToWindowApi29 : CalculateMatrixToWindow {
+    private val tmpMatrix = android.graphics.Matrix()
+    private val tmpPosition = IntArray(2)
+
+    @DoNotInline
+    override fun calculateMatrixToWindow(view: View, matrix: Matrix) {
+        tmpMatrix.reset()
+        view.transformMatrixToGlobal(tmpMatrix)
+        var parent = view.parent
+        var root = view
+        while (parent is View) {
+            root = parent
+            parent = root.parent
+        }
+        root.getLocationOnScreen(tmpPosition)
+        val (screenX, screenY) = tmpPosition
+        root.getLocationInWindow(tmpPosition)
+        val (windowX, windowY) = tmpPosition
+        tmpMatrix.postTranslate((windowX - screenX).toFloat(), (windowY - screenY).toFloat())
+        matrix.setFrom(tmpMatrix)
+    }
+}
+
+private class CalculateMatrixToWindowApi21(private val tmpMatrix: Matrix) :
+    CalculateMatrixToWindow {
+    private val tmpLocation = IntArray(2)
+
+    override fun calculateMatrixToWindow(view: View, matrix: Matrix) {
+        matrix.reset()
+        transformMatrixToWindow(view, matrix)
+    }
+
+    private fun transformMatrixToWindow(view: View, matrix: Matrix) {
+        val parentView = view.parent
+        if (parentView is View) {
+            transformMatrixToWindow(parentView, matrix)
+            matrix.preTranslate(-view.scrollX.toFloat(), -view.scrollY.toFloat())
+            matrix.preTranslate(view.left.toFloat(), view.top.toFloat())
+        } else {
+            val pos = tmpLocation
+            view.getLocationInWindow(pos)
+            matrix.preTranslate(-view.scrollX.toFloat(), -view.scrollY.toFloat())
+            matrix.preTranslate(pos[0].toFloat(), pos[1].toFloat())
+        }
+
+        val viewMatrix = view.matrix
+        if (!viewMatrix.isIdentity) {
+            matrix.preConcat(viewMatrix)
+        }
+    }
+
+    /**
+     * Like [android.graphics.Matrix.preConcat], for a Compose [Matrix] that accepts an [other]
+     * [android.graphics.Matrix].
+     */
+    private fun Matrix.preConcat(other: android.graphics.Matrix) {
+        tmpMatrix.setFrom(other)
+        preTransform(tmpMatrix)
+    }
+
+    /**
+     * Like [android.graphics.Matrix.preTranslate], for a Compose [Matrix]
+     */
+    private fun Matrix.preTranslate(x: Float, y: Float) {
+        preTranslate(x, y, tmpMatrix)
+    }
+}
+
+@RequiresApi(29)
+private object MotionEventVerifierApi29 {
+    @DoNotInline
+    fun isValidMotionEvent(event: MotionEvent, index: Int): Boolean {
+        return event.getRawX(index).isFinite() && event.getRawY(index).isFinite()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.N)
+private object AndroidComposeViewStartDragAndDropN {
+    @DoNotInline
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun startDragAndDrop(
+        view: View,
+        transferData: DragAndDropTransferData,
+        dragShadowBuilder: ComposeDragShadowBuilder
+    ): Boolean = view.startDragAndDrop(
+        transferData.clipData,
+        dragShadowBuilder,
+        transferData.localState,
+        transferData.flags,
+    )
+}
+
+/**
+ * A Class that provides access [View.OnDragListener] APIs for a [DragAndDropNode].
+ */
+private class DragAndDropModifierOnDragListener(
+    private val startDrag: (
+        transferData: DragAndDropTransferData,
+        decorationSize: Size,
+        drawDragDecoration: DrawScope.() -> Unit
+    ) -> Boolean
+) : View.OnDragListener, DragAndDropManager {
+
+    private val rootDragAndDropNode = DragAndDropNode { null }
+
+    /**
+     * A collection [DragAndDropModifierNode] instances that registered interested in a
+     * drag and drop session by returning true in [DragAndDropModifierNode.onStarted].
+     */
+    private val interestedNodes = ArraySet<DragAndDropModifierNode>()
+
+    override val modifier: Modifier = object : ModifierNodeElement<DragAndDropNode>() {
+        override fun create() = rootDragAndDropNode
+
+        override fun update(node: DragAndDropNode) = Unit
+
+        override fun InspectorInfo.inspectableProperties() {
+            name = "RootDragAndDropNode"
+        }
+
+        override fun hashCode(): Int = rootDragAndDropNode.hashCode()
+
+        override fun equals(other: Any?) = other === this
+    }
+
+    override fun onDrag(
+        view: View,
+        event: DragEvent
+    ): Boolean {
+        val dragAndDropEvent = DragAndDropEvent(dragEvent = event)
+        return when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> {
+                val accepted = rootDragAndDropNode.acceptDragAndDropTransfer(dragAndDropEvent)
+                interestedNodes.forEach { it.onStarted(dragAndDropEvent) }
+                accepted
+            }
+
+            DragEvent.ACTION_DROP -> rootDragAndDropNode.onDrop(dragAndDropEvent)
+
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                rootDragAndDropNode.onEntered(dragAndDropEvent)
+                false
+            }
+
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                rootDragAndDropNode.onMoved(dragAndDropEvent)
+                false
+            }
+
+            DragEvent.ACTION_DRAG_EXITED -> {
+                rootDragAndDropNode.onExited(dragAndDropEvent)
+                false
+            }
+
+            DragEvent.ACTION_DRAG_ENDED -> {
+                rootDragAndDropNode.onEnded(dragAndDropEvent)
+                false
+            }
+
+            else -> false
+        }
+    }
+
+    override fun drag(
+        transferData: DragAndDropTransferData,
+        decorationSize: Size,
+        drawDragDecoration: DrawScope.() -> Unit,
+    ): Boolean = startDrag(
+        transferData,
+        decorationSize,
+        drawDragDecoration,
+    )
+
+    override fun registerNodeInterest(node: DragAndDropModifierNode) {
+        interestedNodes.add(node)
+    }
+
+    override fun isInterestedNode(node: DragAndDropModifierNode): Boolean {
+        return interestedNodes.contains(node)
     }
 }

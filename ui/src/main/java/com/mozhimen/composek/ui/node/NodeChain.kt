@@ -2,26 +2,11 @@ package com.mozhimen.composek.ui.node
 
 import androidx.compose.runtime.collection.MutableVector
 import androidx.compose.runtime.collection.mutableVectorOf
-import androidx.compose.ui.input.pointer.SuspendPointerInputElement
-import androidx.compose.ui.layout.ModifierInfo
-import androidx.compose.ui.node.BackwardsCompatNode
-import androidx.compose.ui.node.DiffCallback
-import androidx.compose.ui.node.ForceUpdateElement
-import androidx.compose.ui.node.InnerNodeCoordinator
-import androidx.compose.ui.node.LayoutModifierNodeCoordinator
-import androidx.compose.ui.node.LayoutNode
-import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.node.NodeCoordinator
-import androidx.compose.ui.node.NodeKind
-import androidx.compose.ui.node.Nodes
-import androidx.compose.ui.node.SentinelHead
-import androidx.compose.ui.node.actionForModifiers
-import androidx.compose.ui.node.asLayoutModifierNode
-import androidx.compose.ui.node.dispatchForKind
-import androidx.compose.ui.node.executeDiff
-import androidx.compose.ui.node.fillVector
-import androidx.compose.ui.node.updateUnsafe
-
+import com.mozhimen.composek.ui.CombinedModifier
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.areObjectsOfSameType
+import com.mozhimen.composek.ui.input.pointer.SuspendPointerInputElement
+import com.mozhimen.composek.ui.layout.ModifierInfo
 /**
  * @ClassName NodeChain
  * @Description TODO
@@ -29,6 +14,12 @@ import androidx.compose.ui.node.updateUnsafe
  * @Date 2024/10/29
  * @Version 1.0
  */
+private val SentinelHead = object : Modifier.Node() {
+    override fun toString() = "<Head>"
+}.apply {
+    aggregateChildKindSet = 0.inv()
+}
+
 internal class NodeChain(val layoutNode: LayoutNode) {
     internal val innerCoordinator = InnerNodeCoordinator(layoutNode)
     internal var outerCoordinator: NodeCoordinator = innerCoordinator
@@ -795,3 +786,64 @@ internal class NodeChain(val layoutNode: LayoutNode) {
 private const val ActionReplace = 0
 private const val ActionUpdate = 1
 private const val ActionReuse = 2
+
+/**
+ * Here's the rules for reusing nodes for different modifiers:
+ * 1. if modifiers are equals, we REUSE but NOT UPDATE
+ * 2. if modifiers are same class, we REUSE and UPDATE
+ * 3. else REPLACE (NO REUSE, NO UPDATE)
+ */
+internal fun actionForModifiers(prev: Modifier.Element, next: Modifier.Element): Int {
+    return if (prev == next) {
+        ActionReuse
+    } else if (areObjectsOfSameType(prev, next) ||
+        (prev is ForceUpdateElement && areObjectsOfSameType(prev.original, next))
+    ) {
+        ActionUpdate
+    } else {
+        ActionReplace
+    }
+}
+
+private fun <T : Modifier.Node> ModifierNodeElement<T>.updateUnsafe(
+    node: Modifier.Node
+) {
+    @Suppress("UNCHECKED_CAST")
+    update(node as T)
+}
+
+private fun Modifier.fillVector(
+    result: MutableVector<Modifier.Element>
+): MutableVector<Modifier.Element> {
+    val capacity = result.size.coerceAtLeast(16)
+    val stack = MutableVector<Modifier>(capacity).also { it.add(this) }
+    var predicate: ((Modifier.Element) -> Boolean)? = null
+    while (stack.isNotEmpty()) {
+        when (val next = stack.removeAt(stack.size - 1)) {
+            is CombinedModifier -> {
+                stack.add(next.inner)
+                stack.add(next.outer)
+            }
+            is Modifier.Element -> result.add(next)
+            // some other node.Modifier implementation that we don't know about...
+            // late-allocate the predicate only once for the entire stack
+            else -> next.all(predicate ?: { element: Modifier.Element ->
+                result.add(element)
+                true
+            }.also { predicate = it })
+        }
+    }
+    return result
+}
+
+@Suppress("ModifierNodeInspectableProperties")
+private data class ForceUpdateElement(val original: ModifierNodeElement<*>) :
+    ModifierNodeElement<Modifier.Node>() {
+    override fun create(): Modifier.Node {
+        throw IllegalStateException("Shouldn't be called")
+    }
+
+    override fun update(node: Modifier.Node) {
+        throw IllegalStateException("Shouldn't be called")
+    }
+}

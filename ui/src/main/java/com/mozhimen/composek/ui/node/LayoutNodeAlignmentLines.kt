@@ -1,8 +1,10 @@
 package com.mozhimen.composek.ui.node
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.layout.AlignmentLine
-import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.unit.toOffset
+import com.mozhimen.composek.ui.layout.AlignmentLine
+import com.mozhimen.composek.ui.layout.HorizontalAlignmentLine
+import com.mozhimen.composek.ui.layout.merge
 import kotlin.math.roundToInt
 
 /**
@@ -198,4 +200,38 @@ internal sealed class AlignmentLines(val alignmentLinesOwner: AlignmentLinesOwne
     }
 
     protected abstract fun NodeCoordinator.calculatePositionInParent(position: Offset): Offset
+}
+
+/**
+ * AlignmentLines impl that are specific to non-lookahead pass.
+ */
+internal class LayoutNodeAlignmentLines(
+    alignmentLinesOwner: AlignmentLinesOwner
+) : AlignmentLines(alignmentLinesOwner) {
+
+    override val NodeCoordinator.alignmentLinesMap: Map<AlignmentLine, Int>
+        get() = measureResult.alignmentLines
+
+    override fun NodeCoordinator.getPositionFor(alignmentLine: AlignmentLine): Int =
+        get(alignmentLine)
+
+    override fun NodeCoordinator.calculatePositionInParent(position: Offset): Offset =
+        toParentPosition(position)
+}
+
+/**
+ * AlignmentLines impl that are specific to lookahead pass.
+ */
+internal class LookaheadAlignmentLines(
+    alignmentLinesOwner: AlignmentLinesOwner
+) : AlignmentLines(alignmentLinesOwner) {
+
+    override val NodeCoordinator.alignmentLinesMap: Map<AlignmentLine, Int>
+        get() = lookaheadDelegate!!.measureResult.alignmentLines
+
+    override fun NodeCoordinator.getPositionFor(alignmentLine: AlignmentLine): Int =
+        lookaheadDelegate!![alignmentLine]
+
+    override fun NodeCoordinator.calculatePositionInParent(position: Offset): Offset =
+        this.lookaheadDelegate!!.position.toOffset() + position
 }

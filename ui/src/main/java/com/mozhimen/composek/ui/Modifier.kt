@@ -2,8 +2,6 @@ package com.mozhimen.composek.ui
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.node.DrawModifierNode
-import androidx.compose.ui.node.invalidateDraw
 import com.mozhimen.composek.ui.node.NodeCoordinator
 import com.mozhimen.composek.ui.node.ObserverNodeOwnerScope
 import com.mozhimen.composek.ui.node.requireOwner

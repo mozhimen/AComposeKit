@@ -1,16 +1,12 @@
 package com.mozhimen.composek.ui.focus
 
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusEventModifierNode
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.focus.FocusOwnerImpl
-import androidx.compose.ui.focus.FocusPropertiesModifierNode
-import androidx.compose.ui.focus.FocusTargetNode
-import androidx.compose.ui.focus.FocusTransactionManager
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.rotary.RotaryScrollEvent
 import androidx.compose.ui.unit.LayoutDirection
+import com.mozhimen.composek.ui.Modifier
+import com.mozhimen.composek.ui.node.FocusPropertiesModifierNode
 
 /**
  * @ClassName FocusOwner
