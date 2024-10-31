@@ -105,7 +105,7 @@ fun Switch2(
                 value = checked,
                 onValueChange = onCheckedChange,
                 enabled = enabled,
-                role = Role.Switch,
+                role = Role.RadioButton,
                 interactionSource = interactionSource,
                 indication = null
             )
