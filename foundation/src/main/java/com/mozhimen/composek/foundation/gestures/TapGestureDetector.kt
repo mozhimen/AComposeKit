@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.foundation.gestures
+package com.mozhimen.composek.foundation.gestures
 
 import androidx.compose.foundation.gestures.GestureCancellationException
 import androidx.compose.foundation.gestures.PressGestureScope

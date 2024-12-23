@@ -12,7 +12,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.launch
-import com.mozhimen.composek.basic.foundation.gestures.detectTapAndPress
+import com.mozhimen.composek.foundation.gestures.detectTapAndPress
 
 /**
  * @ClassName TextFieldPressGestureFilter

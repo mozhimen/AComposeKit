@@ -1,4 +1,4 @@
-package com.mozhimen.composek.basic.foundation.lazy
+package com.mozhimen.composek.foundation.lazy
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
