@@ -44,8 +44,8 @@ android {
 }
 
 dependencies {
-    implementation project(':SwiftKit:composek')
-    implementation project(':SwiftKit:basick')
+    implementation project(':ASwiftKit:composek')
+    implementation project(':ASwiftKit:basick')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

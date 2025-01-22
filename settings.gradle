@@ -28,27 +28,43 @@ dependencyResolutionManagement {
 rootProject.name = "AComposeKit"
 include ':app'
 include ':rebugger'
-//SwiftKit
-include ':SwiftKit'
-project(':SwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\SwiftKit")
-include ':SwiftKit:basick'
-include ':SwiftKit:composek'
-//AImageKit
-include ':AImageKit'
-project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
-include ':AImageKit:imagek_glide_compose'
-include ':AImageKit:imagek_glide'
-//KUtilKit
-include ':KUtilKit'
-project(':KUtilKit').projectDir = new File("D:\\Workspace\\GitHub\\KUtilKit")
-include ':KUtilKit:utilk_android'
-include ':KUtilKit:utilk_kotlin'
-//ALibKit_Jetpack
-include ':ALibKit_Jetpack'
-project(':ALibKit_Jetpack').projectDir = new File("D:\\Workspace\\GitHub\\ALibKit_Jetpack")
-include ':ALibKit_Jetpack:emoji2'
 include ':material'
 include ':foundation'
 include ':ui'
 include ':material3'
 include ':runtime'
+//ALibKit_Google
+include ':ALibKit_Google'
+project(':ALibKit_Google').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Google")
+include ':ALibKit_Google:material'
+//ALibKit_Jetpack
+include ':ALibKit_Jetpack'
+project(':ALibKit_Jetpack').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Jetpack")
+include ':ALibKit_Jetpack:preference'
+include ':ALibKit_Jetpack:core_splashscreen'
+include ':ALibKit_Jetpack:databinding'
+include ':ALibKit_Jetpack:core'
+include ':ALibKit_Jetpack:annotation'
+include ':ALibKit_Jetpack:emoji2'
+//ALibKit_Jetbrains
+include ':ALibKit_Jetbrains'
+project(':ALibKit_Jetbrains').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Jetbrains")
+include ':ALibKit_Jetbrains:kotlin_stdlib'
+include ':ALibKit_Jetbrains:kotlinx_coroutines'
+//KUtilKit
+include ':KUtilKit'
+project(':KUtilKit').projectDir = new File("D:\\Workspace\\GitHub\\KUtilKit")
+include ':KUtilKit:android'
+include ':KUtilKit:kotlin'
+//ASwiftKit
+include ':ASwiftKit'
+project(':ASwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\ASwiftKit")
+include ':ASwiftKit:basick'
+include ':ASwiftKit:composek'
+//AImageKit
+include ':AImageKit'
+project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
+include ':AImageKit:glide:compose'
+include ':AImageKit:glide'
+
+
