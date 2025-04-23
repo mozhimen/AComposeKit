@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.mozhimen.composek.rebugger'
+    namespace 'com.mozhimen.composek.coil'
     compileSdk 34
 
     defaultConfig {
-        minSdk 21
+        minSdk 19
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        consumerProguardFiles "consumer-rules.pro"
@@ -27,14 +28,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        compose = true
-    }
+    buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = "1.5.10"
 }
 
 dependencies {
-    api 'io.github.theapache64:rebugger:1.0.0-rc02'
+    api project(':AImageKit:coil2:compose')
+    implementation project(':ASwiftKit:composek')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

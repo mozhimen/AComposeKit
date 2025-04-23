@@ -26,13 +26,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AComposeKit"
-include ':app'
-include ':rebugger'
-include ':material'
-include ':foundation'
-include ':ui'
-include ':material3'
-include ':runtime'
 //ALibKit_Google
 include ':ALibKit_Google'
 project(':ALibKit_Google').projectDir = new File("D:\\WorkSpace\\GitHub\\ALibKit_Google")
@@ -66,5 +59,14 @@ include ':AImageKit'
 project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
 include ':AImageKit:glide:compose'
 include ':AImageKit:glide'
-
-
+include ':AImageKit:coil2:compose'
+//
+include ':app'
+include ':material'
+include ':foundation'
+include ':ui'
+include ':material3'
+include ':runtime'
+include ':image:coil'
+include ':bar'
+include ':bar:test'

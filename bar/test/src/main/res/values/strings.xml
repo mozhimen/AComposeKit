@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AComposeKit_bar</string>
+
+    <string-array name="me_tab">
+        <item>笔记</item>
+        <item>收藏</item>
+        <item>赞过</item>
+    </string-array>
+</resources>

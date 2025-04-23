@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 // 使用
 @Preview
 @Composable
-private fun PreviewLayoutNineGrid() {
-    LayoutNineGrid(modifier = Modifier.background(Color.Gray), itemSize = 100.dp, padding = 10.dp) {
+private fun PreviewNineGridLayout() {
+    NineGridLayout(modifier = Modifier.background(Color.Gray), itemSize = 100.dp, padding = 10.dp) {
         repeat(9) {
             Image(
                 painter = ColorPainter(Color.Red), contentDescription = null,
@@ -41,7 +41,7 @@ private fun PreviewLayoutNineGrid() {
  * @param content 元素内容
  */
 @Composable
-fun LayoutNineGrid(
+fun NineGridLayout(
     modifier: Modifier = Modifier,
     singleItemSize: Dp = 200.dp,
     itemSize: Dp = 100.dp,
