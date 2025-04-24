@@ -16,11 +16,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.unit.Velocity
 import com.mozhimen.composek.utils.runtime.debounceChange
 import com.mozhimen.kotlin.utilk.android.util.UtilKLogWrapper
 import com.mozhimen.kotlin.utilk.commons.IUtilK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /**
  * @ClassName NestedScrollState
@@ -71,7 +73,14 @@ open class NestedScrollState constructor(
 
             else -> 0f
         }
-        safeSnapOffsetTo(needConsumedY)
+        if (needConsumedY == 0f && offsetInterval > 0f) {
+            _coroutineScope.launch {
+                snapOffsetTo(0f)
+            }
+        } else {
+            safeSnapOffsetTo(needConsumedY)
+
+        }
         needConsumedY
     }
 
@@ -83,6 +92,12 @@ open class NestedScrollState constructor(
         }
     }
 
+    private fun safeAnimateOffsetTo(needConsumedY: Float) {
+        _coroutineScope.launch {
+            animateOffsetTo(needConsumedY)
+        }
+    }
+
     suspend fun snapOffsetTo(offset: Float) {
         _mutatorMutex.mutate(MutatePriority.UserInput) {
             _offset.snapTo(offset)
@@ -91,7 +106,6 @@ open class NestedScrollState constructor(
 
     private fun safeSnapOffsetTo(needConsumedY: Float) {
         if (needConsumedY == 0f) return
-        UtilKLogWrapper.d(TAG, "safeSnapOffsetTo: $needConsumedY")
         _coroutineScope.launch {
             snapOffsetTo(offsetInterval + needConsumedY)
         }
@@ -112,6 +126,7 @@ open class NestedScrollState constructor(
      */
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+        UtilKLogWrapper.d(TAG, "onPreScroll: offset $offsetInterval")
         val needConsumedY = when {
             available.y < 0 && offsetInterval > -interval -> {
                 // drag up
@@ -125,6 +140,7 @@ open class NestedScrollState constructor(
     }
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+        UtilKLogWrapper.d(TAG, "onPostScroll: offset $offsetInterval")
         val needConsumedY = when {
             available.y > 0 && offsetInterval < 0 -> {
                 // drag down
@@ -135,6 +151,11 @@ open class NestedScrollState constructor(
         }
         safeSnapOffsetTo(needConsumedY)
         return available.copy(x = 0f, y = needConsumedY)
+    }
+
+    override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+        UtilKLogWrapper.d(TAG, "onPostFling: offset $offsetInterval")
+        return super.onPostFling(consumed, available)
     }
 }
 

@@ -146,8 +146,6 @@ private fun ContentLayout(
             //
             val scrollableContentLayout = subcompose("scrollableContentLayout", content = { ScrollableContentLayout(nestedScrollState) }).first().measure(constraints.copy(minHeight = 0, maxHeight = constraints.maxHeight - topBarHeight))
             layout(constraints.maxWidth, constraints.maxHeight) {
-//                backgroundImage.placeRelative(0, state.offset.toInt().coerceAtMost(0))
-                UtilKLogWrapper.d("ContentLayout>>>>>", "nestedScrollState.offset: ${nestedScrollState.offset}")
                 noPinContentLayout.placeRelative(0, nestedScrollState.offset.toInt())
                 scrollableContentLayout.placeRelative(0, noPinContentLayout.height + nestedScrollState.offset.toInt())
             }
