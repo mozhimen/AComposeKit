@@ -5,23 +5,31 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
@@ -47,10 +55,41 @@ private val MenuElevation = 8.dp
 fun DropdownMenuNoPaddingVertical(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
+    columnModifier: Modifier = Modifier,
+    cardShape: Shape = MaterialTheme.shapes.medium,
+    cardBackgroundColor: Color = MaterialTheme.colors.surface,
+    cardContentColor: Color = contentColorFor(cardBackgroundColor),
+    cardBorder: BorderStroke? = null,
     offset: DpOffset = DpOffset(0.dp, 0.dp),
     properties: PopupProperties = PopupProperties(focusable = true),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
+) = DropdownMenuNoPaddingVertical(
+    expanded = expanded,
+    onDismissRequest = onDismissRequest,
+    columnModifier = columnModifier,
+    cardShape = cardShape,
+    cardBackgroundColor = cardBackgroundColor,
+    cardContentColor = cardContentColor,
+    cardBorder = cardBorder,
+    offset = offset,
+    scrollState = rememberScrollState(),
+    properties = properties,
+    content = content
+)
+
+@Composable
+fun DropdownMenuNoPaddingVertical(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    columnModifier: Modifier = Modifier,
+    cardShape: Shape = MaterialTheme.shapes.medium,
+    cardBackgroundColor: Color = MaterialTheme.colors.surface,
+    cardContentColor: Color = contentColorFor(cardBackgroundColor),
+    cardBorder: BorderStroke? = null,
+    offset: DpOffset = DpOffset(0.dp, 0.dp),
+    scrollState: ScrollState = rememberScrollState(),
+    properties: PopupProperties = PopupProperties(focusable = true),
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val expandedStates = remember { MutableTransitionState(false) }
     expandedStates.targetState = expanded
@@ -73,7 +112,12 @@ fun DropdownMenuNoPaddingVertical(
             DropdownMenuContent(
                 expandedStates = expandedStates,
                 transformOriginState = transformOriginState,
-                modifier = modifier,
+                scrollState = scrollState,
+                columnModifier = columnModifier,
+                cardShape = cardShape,
+                cardBackgroundColor = cardBackgroundColor,
+                cardContentColor = cardContentColor,
+                cardBorder = cardBorder,
                 content = content
             )
         }
@@ -84,8 +128,13 @@ fun DropdownMenuNoPaddingVertical(
 fun DropdownMenuContent(
     expandedStates: MutableTransitionState<Boolean>,
     transformOriginState: MutableState<TransformOrigin>,
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    scrollState: ScrollState,
+    columnModifier: Modifier = Modifier,
+    cardShape: Shape = MaterialTheme.shapes.medium,
+    cardBackgroundColor: Color = MaterialTheme.colors.surface,
+    cardContentColor: Color = contentColorFor(cardBackgroundColor),
+    cardBorder: BorderStroke? = null,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     // Menu open/close animation.
     val transition = updateTransition(expandedStates, "DropDownMenu")
@@ -142,12 +191,16 @@ fun DropdownMenuContent(
             this.alpha = alpha
             transformOrigin = transformOriginState.value
         },
+        shape = cardShape,
+        backgroundColor = cardBackgroundColor,
+        contentColor = cardContentColor,
+        border = cardBorder,
         elevation = MenuElevation
     ) {
         Column(
-            modifier = modifier
+            modifier = columnModifier
                 .width(IntrinsicSize.Max)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(scrollState),
             content = content
         )
     }
@@ -159,13 +212,13 @@ private val MenuVerticalMargin = 48.dp
 data class DropdownMenuPositionProvider(
     val contentOffset: DpOffset,
     val density: Density,
-    val onPositionCalculated: (IntRect, IntRect) -> Unit = { _, _ -> }
+    val onPositionCalculated: (IntRect, IntRect) -> Unit = { _, _ -> },
 ) : PopupPositionProvider {
     override fun calculatePosition(
         anchorBounds: IntRect,
         windowSize: IntSize,
         layoutDirection: LayoutDirection,
-        popupContentSize: IntSize
+        popupContentSize: IntSize,
     ): IntOffset {
         // The min margin above and below the menu, relative to the screen.
         val verticalMargin = with(density) { MenuVerticalMargin.roundToPx() }
@@ -218,7 +271,7 @@ data class DropdownMenuPositionProvider(
 
 fun calculateTransformOrigin(
     parentBounds: IntRect,
-    menuBounds: IntRect
+    menuBounds: IntRect,
 ): TransformOrigin {
     val pivotX = when {
         menuBounds.left >= parentBounds.right -> 0f

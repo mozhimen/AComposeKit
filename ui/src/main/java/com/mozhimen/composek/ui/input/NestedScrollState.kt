@@ -38,12 +38,10 @@ open class NestedScrollState constructor(
 ) : NestedScrollConnection, IUtilK {
     var topBarHeight = 0
         set(value) {
-            UtilKLogWrapper.d(TAG, "topBarHeight: $value")
             field = value
         }
     var noPinContentLayoutHeight = 0
         set(value) {
-            UtilKLogWrapper.d(TAG, "noPinContentLayoutHeight: $value")
             field = value
         }
     val interval: Int
@@ -126,7 +124,6 @@ open class NestedScrollState constructor(
      */
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-        UtilKLogWrapper.d(TAG, "onPreScroll: offset $offsetInterval")
         val needConsumedY = when {
             available.y < 0 && offsetInterval > -interval -> {
                 // drag up
@@ -140,7 +137,6 @@ open class NestedScrollState constructor(
     }
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-        UtilKLogWrapper.d(TAG, "onPostScroll: offset $offsetInterval")
         val needConsumedY = when {
             available.y > 0 && offsetInterval < 0 -> {
                 // drag down
@@ -154,7 +150,6 @@ open class NestedScrollState constructor(
     }
 
     override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-        UtilKLogWrapper.d(TAG, "onPostFling: offset $offsetInterval")
         return super.onPostFling(consumed, available)
     }
 }
