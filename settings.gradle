@@ -54,6 +54,7 @@ include ':KUtilKit:kotlin'
 //ASwiftKit
 include ':ASwiftKit'
 project(':ASwiftKit').projectDir = new File("D:\\Workspace\\GitHub\\ASwiftKit")
+include ':ASwiftKit:xmlk'
 include ':ASwiftKit:basick'
 include ':ASwiftKit:composek'
 include ':ASwiftKit:uik:compose'
@@ -63,6 +64,10 @@ project(':AImageKit').projectDir = new File("D:\\Workspace\\GitHub\\AImageKit")
 include ':AImageKit:glide:compose'
 include ':AImageKit:glide'
 include ':AImageKit:coil2:compose'
+//AXmlkKit
+include ':AXmlKit'
+project(':AXmlKit').projectDir = new File("D:\\Workspace\\GitHub\\AXmlKit")
+include ':AXmlKit:dialogk'
 //
 include ':app'
 include ':material'
@@ -73,3 +78,4 @@ include ':runtime'
 include ':image:coil'
 include ':bar'
 include ':bar:test'
+include ':dialog'
