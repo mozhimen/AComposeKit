@@ -47,6 +47,7 @@ dependencies {
     implementation project(':ASwiftKit:composek')
     implementation project(':ASwiftKit:basick')
     implementation project(':ASwiftKit:uik:compose')
+    implementation project(':ASerialKit:html:annotatedstring')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

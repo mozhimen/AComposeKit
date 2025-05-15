@@ -1,15 +1,9 @@
 package com.mozhimen.composek.test
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.mozhimen.composek.elems.commons.ICompose_Listener
+import com.mozhimen.serialk.html.annotatedstring.fromHtml
 import com.mozhimen.uik.compose.bases.activity.BaseActivityCP
 
 class MainActivity : BaseActivityCP() {

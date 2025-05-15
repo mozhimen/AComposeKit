@@ -68,6 +68,11 @@ include ':AImageKit:coil2:compose'
 include ':AXmlKit'
 project(':AXmlKit').projectDir = new File("D:\\Workspace\\GitHub\\AXmlKit")
 include ':AXmlKit:dialogk'
+//ASerialKit
+include ':ASerialKit'
+project(':ASerialKit').projectDir = new File("D:\\Workspace\\GitHub\\ASerialKit")
+include ':ASerialKit:html:annotatedstring'
+include ':ASerialKit:html:spanned'
 //
 include ':app'
 include ':material'
