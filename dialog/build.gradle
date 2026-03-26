@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation project(':ASwiftKit:composek')
+    implementation project(':ASwiftKit:xmlk')
     implementation project(':ASwiftKit:uik:compose')
     implementation project(':AXmlKit:dialogk')
     implementation project(':KUtilKit:android')

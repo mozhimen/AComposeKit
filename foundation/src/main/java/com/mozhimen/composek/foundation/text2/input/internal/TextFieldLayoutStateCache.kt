@@ -2,8 +2,6 @@ package com.mozhimen.composek.foundation.text2.input.internal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.InternalFoundationTextApi
-import androidx.compose.foundation.text.TextDelegate
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.SnapshotMutationPolicy
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -221,7 +219,7 @@ internal class TextFieldLayoutStateCache : State<TextLayoutResult?>, StateObject
 
         // We have to always create a new TextDelegate since it contains internal state that is
         // not snapshot-aware.
-        val textDelegate = TextDelegate(
+        val textDelegate = com.mozhimen.composek.foundation.text.TextDelegate(
             text = AnnotatedString(visualText.toString()),
             style = nonMeasureInputs.textStyle,
             density = measureInputs.density,

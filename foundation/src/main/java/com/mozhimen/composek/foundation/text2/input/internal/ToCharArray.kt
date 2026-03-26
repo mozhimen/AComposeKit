@@ -2,7 +2,7 @@ package com.mozhimen.composek.foundation.text2.input.internal
 
 import android.text.TextUtils
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldCharSequence
+import com.mozhimen.composek.foundation.text2.input.TextFieldCharSequence
 
 /**
  * @ClassName ToCharArray

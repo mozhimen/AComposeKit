@@ -2,11 +2,6 @@ package com.mozhimen.composek.foundation.text2.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text2.input.TextFieldState
-import androidx.compose.foundation.text2.input.allCaps
-import androidx.compose.foundation.text2.input.maxLengthInChars
-import androidx.compose.foundation.text2.input.maxLengthInCodepoints
-import androidx.compose.foundation.text2.input.then
 import androidx.compose.runtime.Stable
 
 /**

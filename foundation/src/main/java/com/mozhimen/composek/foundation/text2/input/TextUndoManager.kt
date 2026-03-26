@@ -50,7 +50,7 @@ internal class TextUndoManager(
         }
 
         flush()
-        state.undo(undoManager.undo())
+        undoManager.undo()?.let { state.undo(it) }
     }
 
     fun redo(state: TextFieldState) {
@@ -58,7 +58,9 @@ internal class TextUndoManager(
             return
         }
 
-        state.redo(undoManager.redo())
+        undoManager.redo()?.let {
+            state.redo(it)
+        }
     }
 
     fun record(op: TextUndoOperation) {

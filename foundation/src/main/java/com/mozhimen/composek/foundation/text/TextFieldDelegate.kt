@@ -26,11 +26,13 @@ import androidx.compose.ui.text.input.TextInputService
 import androidx.compose.ui.text.input.TextInputSession
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import com.mozhimen.composek.foundation.text.selection.visibleBounds
+import kotlin.collections.listOf
 import kotlin.math.max
 import kotlin.math.min
 
@@ -67,9 +69,9 @@ internal fun computeSizeForDefaultText(
     val paragraph = Paragraph(
         text = text,
         style = style,
-        spanStyles = listOf(),
+        spanStyles = listOf<AnnotatedString.Range<SpanStyle>>(),
         maxLines = maxLines,
-        ellipsis = false,
+        overflow = TextOverflow.Ellipsis,
         density = density,
         fontFamilyResolver = fontFamilyResolver,
         constraints = Constraints()

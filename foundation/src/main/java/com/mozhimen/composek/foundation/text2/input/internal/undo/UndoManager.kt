@@ -4,6 +4,8 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.util.fastForEach
+import com.mozhimen.kotlin.utilk.kotlin.collections.removeFirstSafe
+import com.mozhimen.kotlin.utilk.kotlin.collections.removeLastSafe
 
 /**
  * @ClassName UndoManager
@@ -57,7 +59,7 @@ internal class UndoManager<T>(
         redoStack.clear()
 
         while (size > capacity - 1) { // leave room for the immediate `add`
-            undoStack.removeFirst()
+            undoStack.removeFirstSafe()
         }
         undoStack.add(undoableAction)
     }
@@ -68,15 +70,17 @@ internal class UndoManager<T>(
      * This method returns the item that was on top of the undo stack. By the time this function
      * returns, the given item has already been carried to the redo stack.
      */
-    fun undo(): T {
+    fun undo(): T? {
         check(canUndo) {
             "It's an error to call undo while there is nothing to undo. " +
                     "Please first check `canUndo` value before calling the `undo` function."
         }
 
-        val topOperation = undoStack.removeLast()
+        val topOperation = undoStack.removeLastSafe()
 
-        redoStack.add(topOperation)
+        topOperation?.let {
+            redoStack.add(it)
+        }
         return topOperation
     }
 
@@ -86,15 +90,17 @@ internal class UndoManager<T>(
      * This method returns the item that was on top of the redo stack. By the time this function
      * returns, the given item has already been carried back to the undo stack.
      */
-    fun redo(): T {
+    fun redo(): T? {
         check(canRedo) {
             "It's an error to call redo while there is nothing to redo. " +
                     "Please first check `canRedo` value before calling the `redo` function."
         }
 
-        val topOperation = redoStack.removeLast()
+        val topOperation = redoStack.removeLastSafe()
 
-        undoStack.add(topOperation)
+        topOperation?.let {
+            undoStack.add(it)
+        }
         return topOperation
     }
 

@@ -4,12 +4,6 @@ package com.mozhimen.composek.foundation.text2.input
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.clearText
-import androidx.compose.foundation.text2.input.forEachTextValue
-import androidx.compose.foundation.text2.input.rememberTextFieldState
-import androidx.compose.foundation.text2.input.setTextAndPlaceCursorAtEnd
-import androidx.compose.foundation.text2.input.setTextAndSelectAll
-import androidx.compose.foundation.text2.input.textAsFlow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collection.mutableVectorOf
