@@ -32,9 +32,9 @@ android {
 }
 
 dependencies {
-    implementation project(':ASwiftKit:composek')
     implementation project(project.path.replace(project.name,'')+':foundation')
-    implementation project(':KUtilKit:android')
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
+    implementation 'com.github.mozhimen.KUtilKit:android:0.0.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

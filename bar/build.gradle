@@ -32,12 +32,8 @@ android {
 }
 
 dependencies {
-    implementation project(':ASwiftKit:composek')
-    if (rootProject.name == "AComposeKit") {
-        implementation project(':ui')
-    } else {
-        implementation project(':AComposeKit:ui')
-    }
+    implementation project(':ui')
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

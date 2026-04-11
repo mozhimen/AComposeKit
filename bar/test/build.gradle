@@ -36,10 +36,10 @@ android {
 }
 
 dependencies {
-    implementation project(':ASwiftKit:composek')
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
     implementation project(':bar')
     implementation project(':ui')
-    implementation project(':image:coil')
+    implementation project(':image-coil')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

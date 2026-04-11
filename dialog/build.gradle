@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -32,11 +33,11 @@ android {
 }
 
 dependencies {
-    implementation project(':ASwiftKit:composek')
-    implementation project(':ASwiftKit:xmlk')
-    implementation project(':ASwiftKit:uik:compose')
-    implementation project(':AXmlKit:dialogk')
-    implementation project(':KUtilKit:android')
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
+    implementation 'com.github.mozhimen.ASwiftKit:xmlk:2.1.6'
+    implementation 'com.github.mozhimen.ASwiftKit:uik-compose:2.1.6'
+    implementation 'com.github.mozhimen.AXmlKit:dialogk:0.0.1'
+    implementation 'com.github.mozhimen.KUtilKit:android:0.0.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

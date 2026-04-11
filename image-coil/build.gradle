@@ -8,8 +8,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        minSdk 19
-        multiDexEnabled true
+        minSdk 21
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        consumerProguardFiles "consumer-rules.pro"
@@ -33,8 +32,8 @@ android {
 }
 
 dependencies {
-    api project(':AImageKit:coil2:compose')
-    implementation project(':ASwiftKit:composek')
+    api 'com.github.mozhimen.ANetKit:coil2-compose:0.0.5'
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

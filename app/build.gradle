@@ -44,10 +44,10 @@ android {
 }
 
 dependencies {
-    implementation project(':ASwiftKit:composek')
-    implementation project(':ASwiftKit:basick')
-    implementation project(':ASwiftKit:uik:compose')
-    implementation project(':ASerialKit:html:annotatedstring')
+    implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
+    implementation 'com.github.mozhimen.ASwiftKit:basick:2.1.6'
+    implementation 'com.github.mozhimen.ASwiftKit:uik-compose:2.1.6'
+    implementation 'com.github.mozhimen.ASerialKit:html-annotatedstring:0.0.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
