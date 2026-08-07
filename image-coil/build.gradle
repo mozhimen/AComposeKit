@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    api 'com.github.mozhimen.ANetKit:coil2-compose:0.0.5'
+    api 'com.github.mozhimen.ANetKit:coil2-compose:0.0.7'
     implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
 
     testImplementation 'junit:junit:4.13.2'

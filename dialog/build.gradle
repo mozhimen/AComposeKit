@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.github.mozhimen.ASwiftKit:composek:2.1.6'
     implementation 'com.github.mozhimen.ASwiftKit:xmlk:2.1.6'
     implementation 'com.github.mozhimen.ASwiftKit:uik-compose:2.1.6'
-    implementation 'com.github.mozhimen.AXmlKit:dialogk:0.0.1'
+    implementation 'com.github.mozhimen.AXmlKit:dialogk:0.0.7'
     implementation 'com.github.mozhimen.KUtilKit:android:0.0.3'
 
     testImplementation 'junit:junit:4.13.2'
